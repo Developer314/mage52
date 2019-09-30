@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    
+    <default>
+        <system>
+            <!--<media_storage_configuration>
+                <allowed_resources>
+                    <custom_folder>{{media_dir}}/mage25</custom_folder>
+                </allowed_resources>
+            </media_storage_configuration>-->
+            
+            
+            <upload_dir config="config/path">pub/media/mage25</upload_dir>
+            
+        </system>
+    </default>
+</config>

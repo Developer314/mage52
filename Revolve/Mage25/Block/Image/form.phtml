@@ -1,0 +1,154 @@
+<?php
+if($blockData['bID'] == 0){
+	$blockData['fID']=0;
+	$blockData['fOnstateID']=0;
+	$blockData['imageLinkType']=0;
+	$blockData['internalLinkCID']='';
+	$blockData['externalLink']='';
+	$blockData['altText']='';
+	$blockData['title']='';
+	$blockData['constrainImage']=0;
+	$blockData['maxWidth']='';
+	$blockData['maxHeight']='';
+}
+
+if ($blockData['maxWidth'] == 0) {
+    $blockData['maxWidth'] = '';
+}
+if ($blockData['maxHeight'] == 0) {
+    $blockData['maxHeight'] = '';
+}
+
+
+
+?>
+
+<div id="mage25-block-fields">
+  <fieldset>
+    <legend><?php echo __('Files'); ?></legend>
+    <table class="table table-bordered">
+	    	<tr>
+		    		<td width="25%">
+			    		<label class="control-label"><?php echo __('Image'); ?></label>
+		    		</td>
+		    		<td>
+			    		 <?php echo $blockObject->displayFilePicker('fID',$blockData['fID']); ?>
+		    		</td>
+	    	</tr>
+	    	<tr>
+		    		<td>
+			    		<label class="control-label"><?php echo __('Image Hover'); ?> <small style="color:#999999; font-weight: 200;">(<?php echo __('Optional'); ?>)</small></label>
+		    		</td>
+		    		<td>
+			    		<?php echo $blockObject->displayFilePicker('fOnstateID',$blockData['fOnstateID']); ?>  
+		    		</td>
+	    	</tr>
+    </table>
+  
+    
+  </fieldset>
+  <hr>
+  <fieldset>
+    <legend><?php echo __('Link -  alt/title'); ?></legend>
+    
+    <table class="table table-bordered">
+	    	<tr>
+		    		<td width="25%">
+			    		<label for="imageLinkType" class="control-label"><?php echo __('Image Link'); ?></label>
+		    		</td>
+		    		<td>
+			    		<select name="imageLinkType" id="imageLinkType" class="form-control" style="width: 60%;">
+		<option value="0" <?php echo (empty($blockData['externalLink']) && empty($blockData['internalLinkCID']) ? 'selected="selected"' : '')?>><?php echo __('None'); ?></option>
+		<option value="1" <?php echo (empty($blockData['externalLink']) && !empty($blockData['internalLinkCID']) ? 'selected="selected"' : '')?>><?php echo __('Another Page'); ?></option>
+		<option value="2" <?php echo (!empty($blockData['externalLink']) ? 'selected="selected"' : '')?>><?php echo __('External URL'); ?></option>
+	</select>
+		    		</td>
+	    	</tr>
+	    	<tr id="imageLinkTypePage" style="display: none;" class="form-group">
+		    		<td>
+			    		 <label for="internalLinkCID" class="control-label"><?php echo __('Choose Page'); ?>:</label>
+		    		</td>
+		    		<td>
+			    		<?php echo $blockObject->displayPagePicker('internalLinkCID',$blockData['internalLinkCID']); ?>
+		    		</td>
+	    	</tr>
+	    	<tr id="imageLinkTypeExternal" style="display: none;" class="form-group">
+		    		<td>
+			    		<label for="externalLink" class="control-label"><?php echo __('URL'); ?></label>
+		    		</td>
+		    		<td>
+			    		<input type="text" id="externalLink" name="externalLink" value="<?php echo $blockData['externalLink'] ?>" style="width: 60%;" class="form-control mage25-input-text">
+		    		</td>
+	    	</tr>
+	    	
+	    	<tr >
+		    		<td>
+			    		 <label for="altText" class="control-label"><?php echo __('Alt. Text'); ?></label>
+		    		</td>
+		    		<td>
+			    		<input type="text" id="altText" name="altText" value="<?php echo $blockData['altText'] ?>" style="width: 60%;" class="form-control mage25-input-text">
+		    		</td>
+	    	</tr>
+	    	
+	    		<tr >
+		    		<td>
+			    		 <label for="title" class="control-label"><?php echo __('Title'); ?></label>
+		    		</td>
+		    		<td>
+			    		<input type="text" id="title" name="title" value="<?php echo $blockData['title'] ?>" style="width: 60%;" class="form-control mage25-input-text">
+		    		</td>
+	    	</tr>
+	    	
+	    	
+	    	
+    </table>
+
+  </fieldset>
+  <fieldset>
+    <legend><?php echo __('Resize Image'); ?></legend>
+    
+     <table class="table table-bordered">
+	    	<tr>
+		    		<td width="25%" colspan="2">
+			    		<div class="checkbox" data-checkbox-wrapper="constrain-image">
+			    		<label>
+          <input type="checkbox" id="constrainImage" name="constrainImage" class="mage25-input-checkbox" value="1" <?php if($blockData['constrainImage']){ echo 'checked="checked"';} ?>> <?php echo __('Constrain Image Size'); ?></label>
+			    		</div>
+		    		</td>
+	    	</tr>
+	    	<tr data-fields="constrain-image" style="display: none">
+		    		<td width="25%">
+			    		<label for="maxWidth" class="control-label"><?php echo __('Max Width'); ?></label>
+        <input type="text" id="maxWidth" name="maxWidth" value="<?php echo $blockData['maxWidth'] ?>" style="width: 60px" class="form-control mage25-input-text">
+		    		</td>
+		    		<td>
+			    		<label for="maxHeight" class="control-label"><?php echo __('Max Height'); ?></label>
+        <input type="text" id="maxHeight" name="maxHeight" value="<?php echo $blockData['maxHeight'] ?>" style="width: 60px" class="form-control mage25-input-text">
+		    		</td>
+	    	</tr>
+     </table>
+    
+
+  </fieldset>
+  <script type="text/javascript">
+	  require(['jquery'], function ($) {
+refreshImageLinkTypeControls = function() {
+	var linkType = $('#imageLinkType').val();
+	$('#imageLinkTypePage').toggle(linkType == 1);
+	$('#imageLinkTypeExternal').toggle(linkType == 2);
+}
+
+$(document).ready(function() {
+	$('#imageLinkType').change(refreshImageLinkTypeControls);
+	$('div[data-checkbox-wrapper=constrain-image] input').on('change', function() {
+        if ($(this).is(':checked')) {
+            $('tr[data-fields=constrain-image]').show();
+        } else {
+            $('tr[data-fields=constrain-image]').hide();
+        }
+    }).trigger('change');
+	refreshImageLinkTypeControls();
+});
+  });
+</script> 
+</div>

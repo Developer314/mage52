@@ -1,0 +1,47 @@
+<?php
+	$file_object = $this->registry->registry('file_object');
+	$file_sets = $this->registry->registry('file_sets');
+	$file_sets_all = $this->registry->registry('file_sets_all');
+	$object = $this->registry->registry('object');
+?>
+<div class="mage25-ui" id="mage25_popup_wrapper">
+<form class="form-horizontal" method="post" id="mage25_filereplace_form" onsubmit="mage25_SaveFileForm('mage25_filereplace_form');" action="<?php echo $this->getSiteUrl(); ?>mage25/filemanager/manage" target="mage25_upload_target" enctype="multipart/form-data">
+		        <input type="hidden" name="action" value="replace_file" />
+		        <input type="hidden" name="fID"  value="<?php echo $file_object['fID'] ?>" />
+		        <input type="hidden" name="fPath"  value="<?php echo $file_object['fPath'] ?>" />
+	          <table class="table table-bordered table-hover">
+	
+			  <tr>
+				  <td></td>
+	              <td ><?php echo $object->getMediaFile($file_object['fPath'], 200, 0); ?></td>
+	             	            </tr>
+	            <tr>
+	              <td align="right"><?php echo __('Choose/Replace File'); ?></td>
+	              <td><input type="file" name="mage25_file_upload"  ></td>
+	            </tr>
+	
+	
+	
+	            <tr>
+	              <td align="right"><?php echo __('File Set'); ?></td>
+	              <td><select multiple="multiple" name="filesets[]">
+	                  <?php foreach($file_sets_all as $k){ ?>
+	                  <option value="<?php echo $k['fsID']; ?>" <?php if(in_array($k['fsID'],$file_sets)){ echo "selected";} ?>><?php echo $k['fsName']; ?></option>
+	                  <?php } ?>
+	                </select></td>
+	            </tr>
+	            <tr>
+	              <td align="right"><?php echo __('Caption'); ?></td>
+	              <td><input type="text" name="fName"  class="form-control" placeholder="Caption" value="<?php echo $file_object['fName'] ?>"></td>
+	            </tr>
+	            <tr>
+	              <td align="right"><?php echo __('Description'); ?></td>
+	              <td><textarea name="fDescription" class="form-control" placeholder="Description"><?php echo $file_object['fDescription'] ?></textarea></td>
+	            </tr>
+	            <tr>
+	              <td ><div style="display: none"><input type="reset" id="mage25_fileupload_form_reset" value="Reset" /></div></td>
+	              <td><button type="submit" class="btn-small btn-success"><span><?php echo __('Upload'); ?></span></button></td>
+	            </tr>
+	          </table>
+	        </form>
+</div>

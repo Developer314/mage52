@@ -1,0 +1,100 @@
+<?php
+$file_collection = $this->registry->registry('file_collection');
+$file_model = $this->registry->registry('file_model');
+$object = $this->registry->registry('object');
+$fsID = $this->registry->registry('fsID');
+$keyword = $this->registry->registry('keyword');
+$file_pager = $this->registry->registry('file_pager');
+$FileSets = $this->registry->registry('file_sets');
+$elementid = $this->registry->registry('elementid');
+$fieldtype = $this->registry->registry('fieldtype');
+?>
+<table class="table">
+	<tr><td>
+<select id="mage25_files_with_selected" class="form-control" onchange="mage25_FilesWithSelected(this.value)">
+	<option value="">With Selected</option>
+	<option value="delete">Delete</option>
+</select>
+	</td>
+	<td>
+		<input type="text" class="form-control" <?php if($keyword !=''){ echo "value='".$keyword."'"; }  ?> id="mage25_file_search_text" placeholder="<?php echo __('Search Keyword'); ?>">
+	</td>
+	<td>
+		<select id="mage25_fileset_search_select" class="form-control">
+			<option value="0"><?php echo __("Choose fileset"); ?></option>
+			<?php foreach($FileSets as $k){ ?>
+	                  <option value="<?php echo $k['fsID']; ?>" <?php if($fsID == $k['fsID']){ echo 'selected'; } ?>><?php echo $k['fsName']; ?></option>
+	                  <?php } ?>
+		</select>
+	</td>
+	<td><button type="button" class="btn-small btn-success" onclick="mage25_loadCollectionFiles(0)"><span><?php echo __('Search'); ?></span></button></td>
+	</tr>
+</table>
+<?php
+if(sizeof($file_collection) > 0){
+?>
+
+<table class="table">
+	<thead>
+		<th><input type="checkbox" id="mage25_fIds_select_all">&nbsp;&nbsp;<?php echo __('Select'); ?></th>
+		<th><?php echo __('Thumb'); ?></th>
+		<th><?php echo __('File Name'); ?></th>
+		<th><?php echo __('Date Added'); ?></th>
+		<th><?php echo __('Actions'); ?></th>
+	</thead>
+	<tbody>
+<?php foreach($file_collection as $file){
+	$fileSets = $file_model->getFileSetsOfFile($file['fID']);
+	
+ ?>
+ <tr>
+	 <td><input type="checkbox" name="mage25_fIds" value="<?php echo $file['fID']; ?>"></td>
+	 	<td><?php echo $object->getMediaFile($file['fPath'], 75, 0); ?></td>
+	 	<td><?php echo $file['fName']; ?></td>
+	 	<td><?php echo date('Y-m-d H:i', $file['dateAdded']); ?></td>
+	 	<td><button type="button" class="btn-small btn-success" onclick="mage25_editFile('<?php echo $file['fID']; ?>');"><span><?php echo __("Edit"); ?></span></button>
+	 	
+	 	<?php
+	 	if($elementid!=''){
+		 	?>
+		 	&nbsp;<button type="submit" class="btn-small btn-info" onclick="mage25_setFileIdtoField(this,'<?php echo $file['fID']; ?>', '<?php echo $file['fName']; ?>', '<?php echo $file['fPath']; ?>', '<?php echo $elementid; ?>', '<?php echo $fieldtype; ?>');"><span><?php echo __("Choose"); ?></span></button>
+		 	<?php
+		 	}
+	 	?>
+	 	
+	 	
+	 	&nbsp;<button type="submit" class="btn-small btn-danger" onclick="mage25_deleteFiles('<?php echo $file['fID']; ?>');"><span><?php echo __("Trash"); ?></span></button>
+	 	
+	 	</td>
+ </tr>
+ <?php
+} ?>
+	</tbody>
+	
+</table>
+
+<?php echo $file_pager; ?>
+
+<script type="text/javascript">
+	require(['jquery'], function ($) {
+       $(document).ready(function(){
+		   $("#mage25_file_collection_div_parent .pager .item a").click(function(event){
+		       event.preventDefault();
+		       var url = $(this).attr('href');
+		       var url_string = url;
+			   var url = new URL(url_string);
+			   var p = url.searchParams.get("p");
+			   mage25_loadCollectionFiles(p);
+				
+	       });
+	       
+	       $('#mage25_fIds_select_all').click(function () {    
+			     $('[name="mage25_fIds"]').prop('checked', this.checked);    
+			 });
+	       
+       });
+    });
+</script>
+<?php }else{ ?>
+<h2><?php echo __("Sorry no files found!!!"); ?></h2>
+<?php } ?>

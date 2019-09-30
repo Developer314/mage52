@@ -1,0 +1,19 @@
+<script type="text/javascript">
+var SITE_URL='<?php echo $this->getSiteUrl(); ?>';
+var DIRNAME_APP='';
+var IS_EDIT_MODE = '<?php echo $this->isEditMode()?1:0; ?>';
+var VIEW_URL = '<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('/') ?>';
+</script>
+<?php if($this->isAdminLoggedIn()){ ?>
+
+
+<link rel="stylesheet" type="text/css" href="<?php echo $block->getViewFileUrl('Revolve_Mage25::css/mage25.app.css'); ?>" />
+<link rel="stylesheet" type="text/css" href="<?php echo $block->getViewFileUrl('Revolve_Mage25::css/mage25.base.css'); ?>" />
+<!--<link rel="stylesheet" type="text/css" href="<?php echo $block->getViewFileUrl('Revolve_Mage25::css/mage25.jquery.ui.css'); ?>" />-->
+<link rel="stylesheet" type="text/css" href="<?php echo $block->getViewFileUrl('Revolve_Mage25::css/font-awesome.css'); ?>" />
+<link rel="stylesheet" type="text/css" href="<?php echo $block->getViewFileUrl('Revolve_Mage25::js/jqtree/jqtree.css'); ?>" />
+<script type="text/javascript" src="<?php echo $block->getViewFileUrl('Revolve_Mage25::js/jqtree/tree.jquery.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo $block->getViewFileUrl('Revolve_Mage25::js/mage25-app.js'); ?>"></script>
+<?php }  ?>
+
+

@@ -1,0 +1,53 @@
+<?php
+/*$fID;
+$fOnstateID;
+$imageLinkType;
+$internalLinkCID;
+$externalLink;
+$altText;
+$title;
+$constrainImage;
+$maxWidth;
+$maxHeight;
+$filePath;
+*/
+
+$imageOfState = $blockObject->getImageForView($fID, $constrainImage, $maxWidth, $maxHeight);
+if($imageOfState){
+
+$ahrefLink = '';
+if($imageLinkType == 1){
+	$ahrefLink = $blockObject->getLink($internalLinkCID);
+	$target = "";
+}
+
+if($imageLinkType == 2){
+	$ahrefLink = $externalLink;
+	$target = "_blank";
+}
+
+?>
+<div class="mage25-image image-responsive">
+	<?php if($ahrefLink !=''){ ?><a href="<?php echo $ahrefLink; ?>" title="<?php echo $title; ?>" target="<?php echo $target; ?>"> <?php } ?>
+	<img src="<?php echo $imageOfState ?>" id="mage25_image_off_state_<?php echo $bID; ?>" alt="<?php echo $altText; ?>" title="<?php echo $title; ?>"  />
+	<?php if($ahrefLink !=''){ ?></a> <?php } ?>
+</div>
+<?php
+	if($fOnstateID){
+	$imageOnState = $blockObject->getImageForView($fOnstateID, $constrainImage, $maxWidth, $maxHeight);
+
+?>
+<script type="text/javascript">
+	require(['jquery'], function ($) {
+		
+		$(function() {
+		    $('#mage25_image_off_state_<?php echo $bID; ?>')
+		        .mouseover(function(e){$(this).attr("src", '<?php print $imageOnState;?>');})
+		        .mouseout(function(e){$(this).attr("src", '<?php print $imageOfState;?>');});
+		});
+		
+		
+	});
+</script>
+<?php } ?>
+<?php } ?>

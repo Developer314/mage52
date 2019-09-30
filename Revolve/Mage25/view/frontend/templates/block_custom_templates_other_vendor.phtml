@@ -1,0 +1,152 @@
+<?php
+	//https://inviqa.com/blog/using-knockout-js-magento-2
+	//http://knockoutjs.com/documentation/value-binding.html
+	$installed_templates = $this->registry->registry('installed_templates');
+	$btID = $this->registry->registry('btID');
+?>
+<div class="mage25-ui">
+
+	<div  id="mage25_main_div">
+		
+		<table class="table table-bordered" id="mage25_installed_other_vendor_templates_table" width="100%">
+
+			<thead>
+				<tr class="info">
+					<th>
+							<?php echo __('Title'); ?>
+					</th>
+					<th>
+							<?php echo __('Actions'); ?>
+					</th>
+				</tr>
+
+			</thead>
+			<tbody>
+				<?php foreach($installed_templates as $template){ ?>
+					<tr>
+						<td><?php echo $template['filename']; ?></td>
+						<td><button type="button" class="btn btn-danger" onclick="mage25_removeVendorCustomTemplate('<?php echo $btID; ?>', '<?php echo $template['filename']; ?>');" title="<?php echo __("Remove Vendor Template"); ?>"><i class="fa fa-trash"></i></button></td>
+					</tr>
+				<?php } ?>
+			</tbody>
+			
+			
+			<tfoot>
+	<tr class="warning">
+			<td><div class="input"><input type="text" class="form-control mage25-input-text" placeholder="<?php echo __('[Vendor]/[Module]/[Folder]/..../..../[templatename].phtml'); ?>" id="mage25_custom_vendor_template_name"  /></div>
+			<em>Revolve/Extends/Block/Slideshow/templates/slides.phtml</em>
+			</td>
+
+			<td><button type="button" class="btn btn-primary" onclick="mage25_insertVendorCustomTemplate();"><?php echo __('Insert new Custom Template'); ?></button></td>
+
+	</tr>
+			</tfoot>
+			
+			
+		</table>
+		
+		
+		
+		
+	</div>
+</div>
+<script type="text/javascript">
+
+require(['jquery'], function($) {
+	
+	mage25_removeVendorCustomTemplate = function(btID, filename){
+		if(!confirm("<?php echo __("Are you sure do you want to delete this template?"); ?>")) return false;
+		var data = {action:'block_custom_templates_other_vendor_delete', btID:<?php echo $btID; ?>,filename:filename};
+
+		var url = mage25_getControllerUrl('/mage25/blocks/add');
+		
+		mage25_showLoader();
+		$.ajax( {
+			    url: url,
+			    data: data,
+			    type: 'POST'
+			}).done(function(ajaxContent) {
+
+				var obj = $.parseJSON(ajaxContent);
+
+				//alert(obj.message);
+				
+				mage25_showOtherVendorTemplatesTable(obj.installed_templates);
+				
+				if(obj.success == 1){
+
+					
+					mage25_showGlobalMessageDiv(obj.message, 'success');
+				}else{
+					mage25_showGlobalMessageDiv(obj.message, 'danger');
+				}
+
+				mage25_hideLoader();
+				
+			}).fail(function( jqXHR, textStatus ) {
+
+			  mage25_showGlobalMessageDiv(jqXHR.responseText, 'danger');
+			  
+			  mage25_hideLoader();
+			  
+			});
+		
+	}
+
+	mage25_insertVendorCustomTemplate = function(){
+
+		var template_path = $('#mage25_custom_vendor_template_name').val();
+		
+		var data = {action:'block_custom_templates_other_vendor_add', template_path:template_path,btID:'<?php echo $btID; ?>'};
+
+		var url = mage25_getControllerUrl('/mage25/blocks/add');
+		
+		mage25_showLoader();
+		$.ajax( {
+			    url: url,
+			    data: data,
+			    type: 'POST'
+			}).done(function(ajaxContent) {
+
+				var obj = $.parseJSON(ajaxContent);
+
+				//alert(obj.message);
+				mage25_showOtherVendorTemplatesTable(obj.installed_templates);
+				if(obj.success == 1){
+					
+					mage25_showGlobalMessageDiv(obj.message, 'success');
+					
+				}else{
+					mage25_showGlobalMessageDiv(obj.message, 'danger');
+				}
+				
+				mage25_hideLoader();
+
+			}).fail(function( jqXHR, textStatus ) {
+
+			  mage25_showGlobalMessageDiv(jqXHR.responseText, 'danger');
+			  mage25_hideLoader();
+			});
+	}
+	
+	
+	mage25_showOtherVendorTemplatesTable = function(data){
+		
+		var contents = '';
+		$.each(data, function(i,item) {
+		    contents=contents+"<tr>";
+		    contents=contents+"<td>"+item.filename+"</td>";
+		    
+		    contents=contents+"<td><button title=\"<?php echo __("Other vendor Custom Templates"); ?>\" type=\"button\" class=\"btn btn-danger\" onclick=\"mage25_removeVendorCustomTemplate('"+item.btID+"', '"+item.filename+"');\"><i class=\"fa fa-trash\"></i></button></button></td>";
+		});
+		
+		$("#mage25_installed_other_vendor_templates_table tbody").html(contents);
+		
+		
+	}
+
+
+});
+
+
+</script>

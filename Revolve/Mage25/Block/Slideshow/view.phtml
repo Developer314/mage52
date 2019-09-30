@@ -1,0 +1,109 @@
+<style>
+	#mage25_slideshow_div_<?php echo $bID; ?>{
+		margin: 50px auto; 
+	    position: relative; 
+	    width: 95%; 
+	    height: 530px; 
+	   
+	    box-shadow: 0 0 20px rgba(0,0,0,0.4)
+	}
+	#mage25_slideshow_div_<?php echo $bID; ?> > div{
+		position: absolute; 
+	   
+	}
+</style>
+<?php
+	if($slideshow_type == 'CUSTOM'){
+		$savedSlides = $blockObject->getSlides($bID);
+		echo "<div class='mage25_slideshow_div' id='mage25_slideshow_div_".$bID."'>";
+		foreach($savedSlides as $_slides){
+			echo "<div class='mage25_slideshow_items'>";
+				if($_slides['fID'] > 0){
+					$fileData = $this->getFileByID($_slides['fID']);
+					$imagePath = $this->getImageForView($_slides['fID']);
+					$title = $_slides['title'];
+					$description = $_slides['description'];
+					$target = $_slides['target'];
+					$link_text = $_slides['link_text'];
+					$linkToUrl = '';
+					
+					if($_slides['link_type'] == 1){
+						$pageID = $_slides['page_id'];
+						$linkToUrl = $this->getLink($pageID);
+					}
+					
+					if($_slides['link_type'] == 2 and trim($_slides['external_link']) !=''){
+						$linkToUrl = $_slides['external_link'];
+					}
+					
+					echo "<div class='mage25_img_div'>";
+						if($linkToUrl !=''){
+							echo "<a href='".$linkToUrl."' target='".$target."' title='".$title."'>";
+						}
+						
+						echo "<img src='".$imagePath."' title='".$title."' alt='".$title."'>";
+							
+							
+						if($linkToUrl !=''){
+							echo "</a>";
+						}
+					
+					echo "</div>";
+					
+					if(trim($title) !=''){
+							echo "<div class='mage25_img_title'>".$title."</div>";
+					}
+						
+					if(trim($description) !=''){
+							echo "<div class='mage25_img_desc'>".$description."</div>";
+					}
+					
+					if($linkToUrl !='' and trim($link_text) !=''){
+						echo "<a href='".$linkToUrl."' target='".$target."' title='".$title."'>";
+						echo $link_text;
+						echo "</a>";
+					}
+					
+					
+				}
+			echo "</div>";
+		}
+		echo "</div>";
+	}else{
+		$savedSlides = $blockObject->getFilesByfsID($fsID);
+		
+		echo "<div class='mage25_slideshow_div' id='mage25_slideshow_div_".$bID."'>";
+		foreach($savedSlides as $_slides){
+			$_slides = $this->getFileByID($_slides['fID']);
+			$imagePath = $this->getImageForView($_slides['fID']);
+			echo "<div class='mage25_slideshow_items'>";
+				echo "<div class='mage25_img_div'>";
+						echo "<img src='".$imagePath."' title='".$_slides['fName']."' alt='".$_slides['fName']."'>";
+				echo "</div>";
+			echo "</div>";
+		}
+		echo "</div>";
+	}
+
+	?>
+
+	<script type="text/javascript">
+
+
+require(['jquery'], function($){
+	$(document).ready(function(){
+	
+	$("#mage25_slideshow_div_<?php echo $bID; ?> > div:gt(0)").hide();
+
+setInterval(function() { 
+  $('#mage25_slideshow_div_<?php echo $bID; ?> > div:first')
+    .fadeOut(1000)
+    .next()
+    .fadeIn(1000)
+    .end()
+    .appendTo('#mage25_slideshow_div_<?php echo $bID; ?>');
+},  7000);
+
+});
+});
+	</script>

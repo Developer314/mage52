@@ -1,0 +1,94 @@
+<?php if($this->isAdminLoggedIn()){ ?>
+<div style="display:none" id="mage25-highlighter">&nbsp;</div>
+<div class="mage25_global_error_message"></div>
+<div class="mage25_global_loader"></div>
+
+
+<div id="mage25-page-controls-wrapper" class="mage25-ui">
+    <div id="mage25-toolbar" class="titles ">
+     <ul id="mage25-main-nav">
+        <li>
+	        <span class="mage25-logo-cover">        
+	        	<img id="mage25-logo" src="<?php echo $block->getViewFileUrl('Revolve_Mage25::images/logo_menu.png'); ?>" width="49" height="49" alt="<?php echo __('Mage25, a CMS Solution for Magento2'); ?>" title="<?php echo __('Mage25, a CMS Solution for Magento2'); ?>">
+	        </span>
+		</li>
+                    
+        <?php if(!$this->isEditMode()){ ?>
+        <li class="mage_25_edit_mode">
+           <span class="mage25-button-top">
+                <i class="fa fa-pencil"></i>
+                <span class="mage25-toolbar-accessibility-title mage25-toolbar-accessibility-title-edit-mode">
+                    <?php echo __('Edit Page'); ?>                </span>
+           </span>
+                   </li>
+        	
+        <?php }else{ ?>
+        	
+        <li class="mage25_exit_edit_mode">
+          <span class="mage25-button-top">
+                <i class="fa fa-pencil"></i>
+                <span class="mage25-toolbar-accessibility-title mage25-toolbar-accessibility-title-edit-mode">
+                    <?php echo __('Exit Edit Mode'); ?>                </span>
+                    </span>
+            
+        </li>
+        	
+        <?php } ?>
+        
+        
+        <li class="mage25_add_functionality_popup">
+            <span class="mage25-button-top">
+	            <span class="spinner"><div class="double-bounce1"></div><div class="double-bounce2"></div></span>
+                <i class="fa fa-cog"></i>
+                <span class="mage25-toolbar-accessibility-title mage25-toolbar-accessibility-title-settings">
+                    <?php echo __('Install'); ?>
+                </span>
+            </span>
+           
+        </li>
+        
+        
+        
+        <li class="mage25_file_manager_popup">
+           <span class="mage25-button-top">
+	            <span class="spinner"><div class="double-bounce1"></div><div class="double-bounce2"></div></span>
+                <i class="fa fa-folder"></i>
+                <span class="mage25-toolbar-accessibility-title mage25-toolbar-accessibility-title-settings">
+                    <?php echo __('File Manager'); ?>
+               </span></span>
+           
+        </li>
+        
+        <li class="mage25_sitemap_popup">
+          <span class="mage25-button-top">
+	            <span class="spinner"><div class="double-bounce1"></div><div class="double-bounce2"></div></span>
+                <i class="fa fa-sitemap"></i>
+                <span class="mage25-toolbar-accessibility-title mage25-toolbar-accessibility-title-settings">
+                    <?php echo __('Sitemap'); ?>
+              </span></span>
+           
+        </li>
+                   
+            
+        </li>
+        <li>
+            <a href="<?php echo $this->getAdminUrl(); ?>" target="_blank"  title="<?php echo __('Dashboard'); ?>"><span class="spinner"><div class="double-bounce1"></div><div class="double-bounce2"></div></span>
+                <i class="fa fa-sliders"></i>
+                <span class="mage25-toolbar-accessibility-title mage25-toolbar-accessibility-title-site-settings">
+                    <?php echo __('Dashboard'); ?>                </span>
+
+            </a>
+        </li>
+               
+              
+    </ul>
+  
+
+    </div>
+
+                      
+        </div>
+
+
+
+<?php } ?>

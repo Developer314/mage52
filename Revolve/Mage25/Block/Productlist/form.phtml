@@ -1,0 +1,207 @@
+<?php
+	
+	if($blockData['bID'] == 0){
+		$blockData['heading']='';
+		$blockData['category']='';
+		$blockData['category_id']='';
+		$blockData['attributes']=array();
+		$blockData['per_page']='10';
+		$attrData = array();
+	}else{
+		$attrData = unserialize($blockData['attributes']);
+	}
+$SearchableAttributes = $blockObject::getSearchableAttributes();
+?>
+	<div id="mage25-block-fields" class="form-inline">
+	<fieldset>
+    <legend><?php echo __('Settings'); ?></legend>
+    			
+    			
+    		<div class="form-group">
+    				<div class="clearfix">
+			      <label for="heading" class="control-label"><?php echo __("Block Title"); ?></label>
+			      <div class="input">
+			        <input  value="<?php echo $blockData['heading']; ?>" name="heading" type="text" class="form-control input-md">
+			      </div>
+			    </div>
+      	</div>
+      	
+      	<div class="form-group">
+    				<div class="clearfix">
+			      <label for="alt_title" class="control-label"><?php echo __("Display Products"); ?></label>
+			      <div class="input">
+			        
+			        <select id="mage25_category" name="category" class="form-control">
+				       <option value=""><?php echo __("Select"); ?></option>
+				          <option value="current" <?php if(isset($blockData['category']) and $blockData['category'] == 'current'){ ?> selected="selected" <?php  } ?>><?php echo __('Under Current Category'); ?></option>
+				         <option value="custom" <?php if(isset($blockData['category']) and $blockData['category'] == 'custom'){ ?> selected="selected" <?php  } ?>><?php echo __('Beneath a particular Category'); ?></option>
+				        </select>
+			     
+			     </div>
+			    </div>
+      	</div>
+      	
+      	
+      	<div class="form-group" id="mage25_displayPagesCidDivShowHide" <?php if(isset($blockData['category']) and $blockData['category'] == 'custom'){ ?> style="display:block;" <?php }else{ ?>  style="display:none;" <?php } ?>>
+      	<div class="clearfix" >
+    <label class="col-md-4 control-label" for="category_id"><?php echo __('Category'); ?></label>
+    <div class="input">
+      <?php echo $blockObject::displayPagePicker('category_id', $blockData['category_id']); ?>
+    </div>
+  </div>
+      	</div>
+      	
+      	<div class="form-group">
+     <!-- Text input-->
+    <div class="clearfix">
+      <label for="per_page" class="control-label"><?php echo __('Products Per Page'); ?></label>
+      <div class="input">
+        <input  value="<?php echo $blockData['per_page']; ?>" name="per_page" type="text" class="form-control input-md">
+      </div>
+    </div>
+    </div>
+    			
+  	</fieldset>
+  	
+  	
+  	<fieldset>
+     	<legend><?php echo __('Filter Attributes'); ?></legend>
+     	<?php
+	     	
+	     	/*
+	     	echo "<pre>";
+	     	print_r($attrData);
+	     	echo "</pre>";
+	     	*/
+	     	foreach ($SearchableAttributes as $_attribute){
+		
+				$_code = $_attribute->getAttributeCode();
+				$inputType = $blockObject::getAttributeInputType($_attribute);
+				if(!$inputType) continue;
+				?>
+				
+				<div class="form-group">
+     <!-- Text input-->
+    <div class="clearfix">
+     <label for="<?php echo $_code ?>"><?php echo $blockObject::getAttributeLabel($_attribute) ?></label>
+      <div class="input">
+        
+        
+        <?php
+	   	
+          //  echo $_code."<br />";
+	   	switch($inputType){
+		   	
+		   	case "text":
+		   	$value = '';
+		   	if(isset($attrData[$_code.'_text'])){
+	            $value = $attrData[$_code.'_text'];
+	       	}
+		   	?>
+		   		<input type="text" placeholder="<?php echo __('Like'); ?>" name="mage25_filter_<?php echo $_code ?>_text" id="<?php echo $_code ?>"  class="form-control input-md" value="<?php echo $value; ?>" />
+		   	<?php
+		   	break;
+		   	
+		   	case "price":
+		   		$value = '';
+			   	if(isset($attrData[$_code.'_price'])){
+		            $value = $attrData[$_code.'_price'];
+		       	}
+		   		?>
+		   		<div class="input-range">
+			   		<small>(<?php echo $blockObject::getCurrency(); ?>)</small>
+                        <input name="mage25_filter_<?php echo $_code ?>_price[]" value="<?php if(is_array($value)){ echo $value[0]; } ?>"  class="form-control input-md" type="text" placeholder="<?php echo __("From Amount"); ?>" style="width:40%" />
+                        <span class="separator" style="float: left">&nbsp;<?php echo __('To'); ?>&nbsp;</span>
+                        <input name="mage25_filter_<?php echo $_code ?>_price[]"  class="form-control input-md" type="text" value="<?php if(is_array($value)){ echo $value[1]; } ?>" placeholder="<?php echo __("To Amount"); ?>" style="width:40%"   />
+                        
+                    </div>
+		   		
+		   		<?php
+		   		
+		   		
+		   	break;
+		   	
+		   	
+		   	case "boolean":
+		   	$value = '';
+			   	if(isset($attrData[$_code.'_boolean'])){
+		            $value = $attrData[$_code.'_boolean'];
+		       	}
+		   	?>
+		   		<select class="form-control" name="mage25_filter_<?php echo $_code ?>_boolean">
+			   		<option value=""><?php echo __("Select"); ?></option>
+			   		<option value="1" <?php if($value == 1){ echo "selected"; }  ?>><?php echo __("Yes"); ?></option>
+			   		<option value="0" <?php if($value == 0 and $value!=''){ echo "selected"; }  ?>><?php echo __("No"); ?></option>
+		   		</select>
+		   	<?php
+		   	break;
+		   	
+		   	case "multiselect":
+		   	$options = $blockObject::getAttributeSelectElement($_attribute);
+		   	$value = '';
+			   	if(isset($attrData[$_code.'_multiselect'])){
+		            $value = $attrData[$_code.'_multiselect'];
+		       	}
+		   	?>
+		   		<select class="form-control" name="mage25_filter_<?php echo $_code ?>_multiselect[]" multiple style="height:150px;">
+			   		 
+			   		<?php foreach($options as $fld){ ?>
+                            		<option value="<?php echo $fld['value'] ?>" <?php if(is_array($value) and in_array($fld['value'], $value)){ ?> selected="selected" <?php } ?>><?php echo $fld['label'] ?></option>
+                            	<?php } ?>
+		   		</select>
+		   		<?php
+		   	break;
+		   	
+		   	case "select":
+		   	$options = $blockObject::getAttributeSelectElement($_attribute);
+		   	$value = '';
+			   	if(isset($attrData[$_code.'_select'])){
+		            $value = $attrData[$_code.'_select'];
+		       	}
+		   	?>
+		   		<select name="mage25_filter_<?php echo $_code ?>_select" class="form-control">
+			   		<option value=""><?php echo __("Select"); ?></option>
+			   		<?php foreach($options as $fld){ ?>
+                            		<option value="<?php echo $fld['value'] ?>" <?php if($fld['value'] == $value){ ?> selected="selected" <?php } ?>><?php echo $fld['label'] ?></option>
+                            	<?php } ?>
+		   		</select>
+		   		<?php
+		   	break;
+		   	
+		   	
+	   	}
+
+	        ?>
+        
+        
+        
+        
+      </div>
+    </div>
+    </div>
+				
+				
+				
+				<?php
+				
+				
+				
+				}
+	     	?>
+  	</fieldset>
+</div>
+
+<script>
+    require(['jquery'], function ($) {
+	     $(document).ready(function(){
+	    $("#mage25_category").change(function(){
+		    if($(this).val() == 'custom'){
+			    $("#mage25_displayPagesCidDivShowHide").show();
+		    }else{
+			    $("#mage25_displayPagesCidDivShowHide").hide();
+		    }
+	    });
+       });
+       
+    });
+</script>

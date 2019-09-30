@@ -1,0 +1,29 @@
+<div class="mage25-ui">
+<?php
+	$installedBlocks = $this->registry->registry('installed_block_types');
+	 if(sizeof($installedBlocks)>0){ ?>
+<h2><?php echo __("Choose Block Type"); ?></h2>
+<table class="table table-hover">
+<?php
+	
+	$arID = $this->registry->registry('arID');
+	 foreach($installedBlocks as $k){ 
+			 
+	 ?>
+			<tr>
+				<!--<td><i class="fa fa-file-text"></i></td>-->
+			<td><?php echo $k['btName']; ?></td>
+			<td><p><?php echo $k['btDescription']; ?></p><p><?php echo $k['btHandle']; ?></p></td>
+			
+			<td><button type="button" class="btn btn-info" onclick="mage25_ChooseBlockType('<?php echo $k['btID']; ?>','<?php echo $arID;  ?>', '<?php echo $k['btName']; ?>', '<?php echo $k['btInterfaceWidth']; ?>', '<?php echo $k['btInterfaceHeight']; ?>');"><?php echo __('Choose'); ?></button></td>
+
+			</tr>
+					<?php } ?>
+
+
+</table>
+<?php }else{
+	echo __("Sorry no block types installed");
+}
+?>
+</div>

@@ -1,0 +1,99 @@
+<?php
+	
+	$global_block_data = $this->registry->registry('global_block_data');
+	
+	$arID = $global_block_data['arID'];
+	$bID = $global_block_data['bID'];
+	$btID = $global_block_data['btID'];
+	$btName =  $global_block_data['btName'];
+	$block_action = $global_block_data['block_action'];
+	$class = $global_block_data['block_class'];
+	
+	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+		$field_helper = $objectManager->get($class);
+	
+	?>
+	<div class="mage25-ui">
+	<form class="mage25_block_form" id="mage25_block_add_edit_form" action="<?php echo $this->getSiteUrl(); ?>mage25/blocks/add" method="POST" onsubmit="return mage25_submitAddEditBlockTypeForm(this); return false;">
+		<input type="hidden" name="action" value="update_block_to_area" />
+		<input type="hidden" name="block_action" id="mage25_blockaddeditform_action" value="<?php echo $block_action; ?>" />
+		<input type="hidden" name="arID" value="<?php echo $arID; ?>" />
+		<input type="hidden" name="btID" value="<?php echo $btID; ?>" />
+		<input type="hidden" name="bID" id="mage25_blockaddeditform_bID" value="<?php echo $bID; ?>" />
+		<button class="btn btn-success" style="margin: 0 0 20px;float: right;" type="submit"><span><?php echo __('Save Data'); ?></span></button>
+		<?php $field_helper->$block_action($global_block_data); ?>
+		
+	</form>
+	</div>
+	
+	
+	<script>
+		
+		require(['jquery','tinymce'], function($, tinyMCE){
+		
+		
+		mage25_submitAddEditBlockTypeForm = function(form){
+			if($("#mage25_block_add_edit_form .mage25_tiny_mce").length){
+				tinyMCE.triggerSave();
+			}
+			var url = $(form).attr('action');
+			mage25_showLoader();
+		    $.ajax({
+		           type: "POST",
+		           url: url,
+		           data: $(form).serialize(),
+		           success: function(data)
+		           {
+			           var obj = $.parseJSON(data);
+			
+					 mage25_hideLoader();
+					 if(obj.success == 0){
+						 mage25_showGlobalMessageDiv(obj.message, 'danger');
+					 }else{
+						 mage25_showGlobalMessageDiv(obj.message, 'success');
+						 
+						 var blockHtml = obj.btContent;
+						 var bID = obj.bID;
+						 var arID = '<?php echo $arID; ?>';
+						 var btID = '<?php echo $btID; ?>';
+						 var btName = '<?php echo $btName; ?>';
+						// if(new Block) append
+						
+						//else update content
+						
+						var blockData = '<div id="b'+bID+'-'+arID+'-'+btID+'" btid="'+btID+'" class="mage25-block" onclick="mage25_showBlockMenu(\''+bID+'\', \''+btID+'\', \''+arID+'\', \''+btName+'\')">'+blockHtml+'</div>';
+						
+						var blockID = $("#mage25_blockaddeditform_bID").val();
+						
+						if(blockID == 0){
+						
+							$("#mage25_blockaddeditform_bID").val(bID);
+							$("#mage25_blockaddeditform_action").val('edit');
+							$("#a"+arID).append(blockData);
+						
+						}else{
+						
+							$('#b'+bID+'-'+arID+'-'+btID).html(blockHtml);
+						
+						}
+						
+						
+						
+						 
+						 
+						// location.reload();
+					 }
+			           
+		               
+		           }
+		         });
+			return false;
+			
+		}
+		
+		
+		
+		});
+		
+		
+	</script>

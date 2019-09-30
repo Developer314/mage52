@@ -1,0 +1,25 @@
+<?php
+switch($displayPages){
+		case "top":
+			$catID = 2;
+		break;
+		case "current":
+			if($this->currentCategory){
+				$catID = $this->currentCategory->getID();
+			}else{
+				$catID = 2;
+			}
+		break;
+		case "custom":
+			$catID = $this->urlHelper->getID($displayPagesCID);
+			if($catID == 1){
+				$catID = 2;
+			}
+		break;
+	}
+$categories = $this->categoryRepository->get($catID);
+$categories = $categories->getChildrenCategories();
+//echo ''
+echo $this->displayCategories($categories, 'mage25_store_main_nav', 'mage25_store_sub_nav');
+
+?>

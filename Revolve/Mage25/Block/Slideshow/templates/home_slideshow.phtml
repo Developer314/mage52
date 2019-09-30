@@ -1,0 +1,128 @@
+<style>
+	#mage25_slideshow_div_<?php echo $bID; ?>{
+		margin: 50px auto; 
+	    position: relative; 
+	    width: 95%; 
+	    height: 530px; 
+	   
+	    box-shadow: 0 0 20px rgba(0,0,0,0.4)
+	}
+	#mage25_slideshow_div_<?php echo $bID; ?> > div{
+		position: absolute; 
+	   
+	}
+</style>
+<?php
+	if($slideshow_type == 'CUSTOM'){
+		$savedSlides = $blockObject->getSlides($bID);
+		//echo "<div class='mage25_slideshow_div' id='mage25_slideshow_div_".$bID."'>";
+			echo '<div id="home_slider_content" class="content-slider-items  owl-carousel">';
+		foreach($savedSlides as $_slides){
+			echo "<div class='mage25_slideshow_items'>";
+				if($_slides['fID'] > 0){
+					$fileData = $this->getFileByID($_slides['fID']);
+					$imagePath = $this->getImageForView($_slides['fID']);
+					$title = $_slides['title'];
+					$description = $_slides['description'];
+					$target = $_slides['target'];
+					$link_text = $_slides['link_text'];
+					$linkToUrl = '';
+					
+					if($_slides['link_type'] == 1){
+						$pageID = $_slides['page_id'];
+						$linkToUrl = $this->getLink($pageID);
+					}
+					
+					if($_slides['link_type'] == 2 and trim($_slides['external_link']) !=''){
+						$linkToUrl = $_slides['external_link'];
+					}
+					
+					/*echo "<div class='mage25_img_div'>";
+						if($linkToUrl !=''){
+							echo "<a href='".$linkToUrl."' target='".$target."' title='".$title."'>";
+						}
+						
+						echo "<img src='".$imagePath."' title='".$title."' alt='".$title."'>";
+							
+							
+						if($linkToUrl !=''){
+							echo "</a>";
+						}
+					
+					echo "</div>";
+					
+					if(trim($title) !=''){
+							echo "<div class='mage25_img_title'>".$title."</div>";
+					}
+						
+					if(trim($description) !=''){
+							echo "<div class='mage25_img_desc'>".$description."</div>";
+					}
+					
+					if($linkToUrl !='' and trim($link_text) !=''){
+						echo "<a href='".$linkToUrl."' target='".$target."' title='".$title."'>";
+						echo $link_text;
+						echo "</a>";
+					}
+					*/
+					
+					echo '<div class="item">
+<div class="slide-content"><img src="'.$imagePath.'" alt="" /></div>
+<div class="slide-content-desc"><span class="text-title">'.$title.'</span></div>
+</div>';
+					
+					
+					
+				}
+			echo "</div>";
+		}
+		echo "</div>";
+	}else{
+		$savedSlides = $blockObject->getFilesByfsID($fsID);
+		
+		echo '<div id="home_slider_content" class="content-slider-items  owl-carousel">';
+
+		//echo "<div class='mage25_slideshow_div' id='mage25_slideshow_div_".$bID."'>";
+		foreach($savedSlides as $_slides){
+			$_slides = $this->getFileByID($_slides['fID']);
+			$imagePath = $this->getImageForView($_slides['fID']);
+			/*echo "<div class='mage25_slideshow_items'>";
+				echo "<div class='mage25_img_div'>";
+						echo "<img src='".$imagePath."' title='".$_slides['fName']."' alt='".$_slides['fName']."'>";
+				echo "</div>";
+			echo "</div>";
+			*/
+			
+			echo '<div class="item">
+<div class="slide-content"><img src="'.$imagePath.'" alt="" /></div>
+<div class="slide-content-desc"><span class="text-title">'.$_slides['fName'].'</span></div>
+</div>';
+			
+			
+			
+		}
+		echo "</div>";
+	}
+	
+	?>
+	
+	<!--
+		<div id="home_slider_content" class="content-slider-items  owl-carousel">
+<div class="item">
+<div class="slide-content"><img src="{{media url="wysiwyg/products/product01_1620_665.jpg"}}" alt="" /></div>
+<div class="slide-content-desc"><span class="text-title">Personalization</span></div>
+</div>
+<div class="item">
+<div class="slide-content"><img src="{{media url="wysiwyg/products/product02_1620_665.jpg"}}" alt="" /></div>
+<div class="slide-content-desc"><span class="text-title">Personalization</span></div>
+</div>
+<div class="item">
+<div class="slide-content"><img src="{{media url="wysiwyg/products/product03_1620_665.jpg"}}" alt="" /></div>
+<div class="slide-content-desc"><span class="text-title">Personalization</span></div>
+</div>
+<div class="item">
+<div class="slide-content"><img src="{{media url="wysiwyg/products/product04_1620_665.jpg"}}" alt="" /></div>
+<div class="slide-content-desc"><span class="text-title">Personalization</span></div>
+</div>
+</div>
+-->

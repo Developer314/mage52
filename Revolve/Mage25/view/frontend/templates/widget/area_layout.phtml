@@ -1,0 +1,30 @@
+<?php
+	$layout_title = $block->getData('layout_title');
+	$container_class = $block->getData('container_class');
+	$container_bg_image = $block->getData('container_bg_image');
+	$row_class = $block->getData('row_class');
+	$num_rows = $block->getData('num_rows')?$block->getData('num_rows'):1;
+	$num_columns = $block->getData('num_columns')?$block->getData('num_columns'):1;
+	$column_class = $block->getData('column_class');
+	$is_global = $block->getData('is_global') ? true : false;
+	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+	$field_helper = $objectManager->get('\Revolve\Mage25\Block\Bootstrap');
+	
+			
+	?>
+<?php if($container_class){ ?><div class="<?php echo $container_class; ?>"> <?php } ?>
+	<?php for($j = 0; $j<$num_rows ; $j++){ ?>
+		<?php if($row_class){ ?><div class="<?php echo $row_class; ?>"><?php } ?>
+				<?php for($i=0;$i<$num_columns;$i++){ ?>
+						<?php if($column_class){ ?><div class="<?php echo $column_class; ?>"> <?php } ?>
+							<?php
+								$field_helper->display($layout_title.' Column ('.($j+1).','.($i+1).')', $is_global);
+							?>
+						<?php if($column_class){ ?></div><?php } ?>
+				<?php } ?>
+		<?php if($row_class){ ?></div><?php } ?>
+		<?php } ?>
+	<?php if($container_class){ ?></div><?php } ?>
+	
+	
+	

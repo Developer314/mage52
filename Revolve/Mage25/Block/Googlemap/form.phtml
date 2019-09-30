@@ -1,0 +1,55 @@
+<?php
+	if($blockData['bID'] == 0){
+	$blockData['title']='';
+	$blockData['location']='';
+	$blockData['mapkey']='';
+	$blockData['latitude']='';
+	$blockData['longitude']='';
+	$blockData['width']='';
+	$blockData['height']='';
+	$blockData['zoom']='';
+	
+}
+
+?>
+
+<style type="text/css">
+.note {
+    margin-top: 10px;
+}
+</style> 
+
+<div id="mage25-block-fields">
+ <div class="form-group">
+ <label class="control-label"><?php echo __('Map Title')?>: <div class="note">(<?php echo __('Optional')?>)</div></label>
+ <input id="ccm_googlemap_block_title" name="title" value="<?php echo $blockData['title']; ?>" maxlength="255" class="form-control input-md" type="text" style="width:80%">
+ </div>
+<div class="form-group">
+<label class="control-label"><?php echo __('Location')?>:</label>
+<input id="ccm_googlemap_block_location" name="location" value="<?php echo $blockData['location']; ?>" maxlength="255" class="form-control input-md" type="text" style="width:80%">
+		<div class="note"><?php echo __('e.g. 117 BE 2nd #3310, Zako, OR, 8907')?></div>
+ </div>
+ <div class="form-group">
+  <label class="control-label"><?php echo __('Map Key')?>:</label>
+  <input id="ccm_googlemap_block_map_key" name="mapkey" value="<?php echo $blockData['mapkey']; ?>" maxlength="255" class="form-control input-md" type="text" style="width:80%">
+ </div>
+ <div class="form-group">
+ <label class="control-label"><?php echo __('Zoom')?>:</label>
+ <input id="ccm_googlemap_block_zoom" name="zoom" value="<?php echo $blockData['zoom']; ?>" maxlength="255" class="form-control input-md" type="text" style="width:80%">
+		<div class="note"><?php echo __('Enter a number from 0 to 21, with 21 being the most zoomed in.')?> </div>
+ </div>
+ <div class="form-group">
+ <label class="control-label"><?php echo __('Width')?>:</label>
+ <input id="ccm_googlemap_block_zoom" name="width" value="<?php echo $blockData['width']; ?>" maxlength="255" class="form-control input-md" type="text" style="width:80%">
+		<div class="note"><?php echo __('Enter width to display.')?> </div>
+ </div>
+ <div class="form-group">
+<label class="control-label"><?php echo __('Height')?>:</label>
+<input id="ccm_googlemap_block_zoom" name="height" value="<?php echo $blockData['height']; ?>" maxlength="255" class="form-control input-md" type="text" style="width:80%">
+		<div class="note"><?php echo __('Enter height to display.')?> </div>
+ </div>
+
+</div>
+
+
+

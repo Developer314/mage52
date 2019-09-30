@@ -1,0 +1,55 @@
+<?php
+	if($blockData['bID'] == 0){
+	$blockData['fID']=0;
+	$blockData['downloadText']='';
+	$blockData['target']='';
+	
+	
+}
+
+?>
+<div id="mage25-block-fields">
+    <!-- Image input-->
+    <div class="mage25-block-field-group">
+      <label class="col-md-4 control-label" for="title"><?php echo __("Choose File"); ?></label>
+     <?php
+  if(!isset($blockData['fID'])){
+	  $blockData['fID'] = 0;
+  }
+  ?>  <?php echo $blockObject->displayFilePicker('fID', $blockData['fID']); ?> 
+    </div>
+   
+
+   
+   
+   <!-- Text input-->
+    <div class="form-group">
+      <label for="alt_title" class="control-label"><?php echo __("Target"); ?></label>
+     
+        <select id="open_in" name="target" class="form-control">
+        <option ><?php echo __("Choose"); ?></option>
+    <option value="_blank" <?php if($blockData['target'] == "_blank"){ ?> selected="selected" <?php } ?>><?php echo __("Blank"); ?></option>
+      <option value="_self" <?php if($blockData['target'] == "_self"){ ?> selected="selected" <?php } ?>><?php echo __("Self"); ?></option>
+        <option value="_new" <?php if($blockData['target'] == "_new"){ ?> selected="selected" <?php } ?>><?php echo __("New"); ?></option>
+        <option value="_parent" <?php if($blockData['target'] == "_parent"){ ?> selected="selected" <?php } ?>><?php echo __("Parent"); ?></option>
+        <option value="_top" <?php if($blockData['target'] == "_top"){ ?> selected="selected" <?php } ?>><?php echo __("Top"); ?></option>
+    </select>
+    
+    </div>
+   
+   
+   
+   
+   
+
+      
+      
+    <!-- Text input-->
+  <div class="form-group">
+      <label for="downloadText" class="control-label"><?php echo __("Download Text"); ?></label>
+     
+       <input id="downloadText" name="downloadText" type="text" <?php if(isset($blockData['downloadText'])){ ?> value="<?php echo $blockData['downloadText']; ?>" <?php } ?> placeholder="Download Text" class="form-control input-md">
+    
+    </div>
+    
+  </div>

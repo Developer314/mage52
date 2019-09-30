@@ -1,0 +1,126 @@
+<?php
+	$object = $this->registry->registry('object');
+	$elementid = $this->registry->registry('elementid');
+	$helper = $this->helper('Revolve\Mage25\Helper\Data');
+	$rootcatId  = 2;
+	$categories = $object->get_sub_cats($rootcatId);
+	
+	$rootPageID = 1;
+	
+?>
+<div class="mage25-ui" id="mage25_popup_wrapper">
+	
+
+<ul class="nav nav-tabs">
+  <li class="active"><a id="mage25_li_files" href="#mage25_catalog_categories"><?php echo __('Categories'); ?></a></li>
+  <li><a id="mage25_li_add_files" href="#mage25_catalog_products"><?php echo __('Products'); ?></a></li>
+  <li><a id="mage25_li_file_sets" href="#mage25_catalog_cms"><?php echo __('CMS Pages'); ?></a></li>
+</ul>
+<div class="tab-content">
+	
+	<div id="mage25_catalog_categories" class="tab-pane active">
+		
+		<div id="mage25_category_tree" data-url="<?php echo $helper->getSiteUrl() ?>/mage25/sitemap/tree?action=get_sub_cats"></div>
+		
+
+</div>
+	
+	<div id="mage25_catalog_products" class="tab-pane">
+		
+		
+				<h2><?php echo __("Products"); ?></h2>
+				
+				
+				<table class="table">
+	<tbody><tr>
+	<td>
+		<input type="text" class="form-control" id="mage25_product_search" placeholder="Search Product by Title">
+	</td>
+	
+	<td><button type="button" class="btn-small btn-success" onclick="mage25_searchProductToSitemap('<?php echo $elementid; ?>')"><span>Search</span></button></td>
+	</tr>
+</tbody></table>
+				
+				<div id="mage25_sitemap_products"></div>
+				
+				
+				
+			</div>
+			
+
+	
+	<div id="mage25_catalog_cms" class="tab-pane">
+		
+		
+				<h2><?php echo __("CMS Pages"); ?></h2>
+				
+				
+				<table class="table">
+	<tbody><tr>
+	<td>
+		<input type="text" class="form-control" id="mage25_cmspage_search" placeholder="Search Pages by Title">
+	</td>
+	
+	<td><button type="button" class="btn-small btn-success" onclick="mage25_searchCMSToSitemap('<?php echo $elementid; ?>')"><span>Search</span></button></td>
+	</tr>
+</tbody></table>
+				
+<div id="mage25_sitemap_cmspages"></div>
+				
+				
+			</div>
+			
+	
+	
+	
+
+		</div>
+</div>
+	
+
+<script type="text/javascript">
+require(['jquery'], function ($) {
+    $(document).ready(function(){
+		
+		
+			$("ul.nav.nav-tabs li a").click(function(){
+	       	var contentdiv = $(this).attr('href');
+	       	$("ul.nav.nav-tabs li").removeClass('active');
+	       	$(this).parent('li').addClass('active');
+	       	
+	        $(".tab-content .tab-pane").removeClass('active');
+	       	$(".tab-content "+contentdiv).addClass('active');
+		      });
+		
+	
+		
+		var categories = <?php echo $categories; ?>;
+		
+			
+		
+		$('#mage25_category_tree').tree({
+        	data: categories,
+        	autoOpen: 0
+        	//closedIcon: $('<i class="fa fa-arrow-circle-right"></i>'),
+			//openedIcon: $('<i class="fa fa-arrow-circle-down"></i>')
+    	})
+    	
+    	
+    	<?php if($elementid){ ?>
+    	$('#mage25_category_tree').bind(
+		    'tree.click',
+		    function(event) {
+
+		        var node = event.node;
+
+		        mage25_showSitemapCategoryMenu(node.id,node.name,'<?php echo $elementid; ?>');
+		    }
+		);
+		<?php } ?>
+    	
+    	
+    	
+    	
+});
+});
+</script>

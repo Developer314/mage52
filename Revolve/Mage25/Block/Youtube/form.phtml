@@ -1,0 +1,35 @@
+<?php
+	if($blockData['bID'] == 0){
+	$blockData['title']='';
+	$blockData['YouTubeVideoURL']='';
+	$blockData['vWidth']='';
+	$blockData['vHeight']='';
+	$blockData['vPlayer']='';
+	
+}
+
+?>
+
+<div id="mage25-block-fields">
+<div class="form-group">
+      <label class="control-label" for="title"><?php echo __('Title')?></label>
+       <input id="title" name="title" type="text" <?php if(isset($blockData['title'])){ ?> value="<?php echo $blockData['title']; ?>" <?php } ?> placeholder="Title" class="form-control input-md"> 
+    </div>
+    
+    <div class="form-group">
+      <label class="control-label" for="YouTubeVideoURL"><?php echo __('YouTube URL')?></label>
+       <input id="YouTubeVideoURL" name="YouTubeVideoURL" <?php if(isset($blockData['YouTubeVideoURL'])){ ?> value="<?php echo $blockData['YouTubeVideoURL']; ?>" <?php } ?> type="text" placeholder="YouTube URL" class="form-control input-md"> 
+    </div>
+    
+    <div class="form-group">
+      <label class="control-label" for="vWidth"><?php echo __('Width')?></label>
+       <input id="vWidth" name="vWidth" type="text" <?php if(isset($blockData['vWidth'])){ ?> value="<?php echo $blockData['vWidth']; ?>" <?php } ?> placeholder="Width" class="form-control input-md"> 
+    </div>
+    
+    <div class="form-group">
+      <label class="control-label" for="vHeight"><?php echo __('Height')?></label>
+      <input id="vHeight" name="vHeight" <?php if(isset($blockData['vHeight'])){ ?> value="<?php echo $blockData['vHeight']; ?>" <?php } ?>  type="text" placeholder="Height" class="form-control input-md">
+    </div>
+    
+    
+</div>

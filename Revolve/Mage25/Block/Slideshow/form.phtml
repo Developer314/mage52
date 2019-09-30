@@ -1,0 +1,264 @@
+<?php
+if($blockData['bID'] == 0){
+	$blockData['slideshow_type']='';
+	$blockData['fsID']='';
+	$savedSlides = array();
+}else{
+	$savedSlides = $blockObject->getSlides($blockData['bID']);
+}
+$filesets = $this->getFileSets();
+?>
+<style>
+#mage25-block-fields label {
+    float: left;
+}	
+.mage25SlideItem{
+	margin: 15px 0;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #c0c0;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
+    border-radius: 5px;
+}
+</style>
+
+<div id="mage25-block-fields">
+  <div class="mage25-block-field-group">
+	  	 <!-- Image input-->
+    <div class="clearfix">
+      <label class="control-label" for="orderBy"><?php echo __('Slideshow Type'); ?></label>
+      <div class="input">
+        <select id="mage25_slideshow_type" name="slideshow_type" class="form-control">
+          <option value="CUSTOM" <?php if(isset($blockData['slideshow_type']) and $blockData['slideshow_type'] == 'CUSTOM'){ ?> selected="selected" <?php  } ?>><?php echo __('Custom'); ?></option>
+          
+          <option value="FILESET" <?php if(isset($blockData['slideshow_type']) and $blockData['slideshow_type'] == 'FILESET'){ ?> selected="selected" <?php  } ?>><?php echo __('Fileset'); ?></option>
+        
+        </select>
+      </div>
+    </div>
+    
+    
+        <div class="clearfix" id="mage25FilesetDropdownDiv" <?php if(isset($blockData['slideshow_type']) and $blockData['slideshow_type'] == 'FILESET'){ ?> style="display:block;" <?php }else{ ?>  style="display:none;" <?php } ?>>
+    <label class="col-md-4 control-label" for="fsID"><?php echo __('Choose Fileset'); ?></label>
+    <div class="input">
+	   <select name="fsID" class="form-control">
+		    <option value=""><?php echo __("Choose"); ?></option>
+      	<?php foreach($filesets as $fs){
+	      	
+	      	 ?>
+	      	 <option value="<?php echo $fs['fsID'] ?>" <?php if($fs['fsID']  == $blockData['fsID']){ ?> selected="selected" <?php } ?>><?php echo $fs['fsName']; ?></option>
+      	<?php } ?>
+	   </select>
+    </div>
+  </div>
+    
+    <div class="clearfix" id="mage25CustomSlideshowDiv" <?php if(isset($blockData['slideshow_type']) and $blockData['slideshow_type'] == 'FILESET'){ ?> style="display:none;" <?php }else{ ?>  style="display:block;" <?php } ?>>
+	    
+	    <button class="btn btn-info" onclick="mage25_addSlideItem()" type="button"><span><?php echo __("Add Slide") ?></span></button>
+	    
+	    
+	    <div id="mage25CustomSlideshowItemsDiv">
+		    
+			    	<?php
+				    	$i=0;
+				    	foreach($savedSlides as $_slide){
+					    	?>
+					    	
+					    	<div class="mage25SlideItem" id="mage25SlideItem_<?php echo $i; ?>">
+    <div class="form-group"><label class="control-label" for="fID_<?php echo $i; ?>"><?php echo __('Choose File'); ?></label>
+        <div class="input">
+            <?php echo $this->displayFilePicker('fID_'.$i, $_slide['fID']); ?>
+        </div>
+    </div>
+    <div class="form-group"><label class="control-label" for="title[]"><?php echo __('Title'); ?></label>
+        <div class="input"><input type="text" name="title[]" class="form-control" value="<?php echo $_slide['title']; ?>"></div>
+    </div>
+    <div class="form-group"><label class="control-label" for="description[]"><?php echo __('Description'); ?></label>
+        <div class="input"><textarea name="description[]" class="form-control"><?php echo $_slide['description']; ?></textarea></div>
+    </div>
+    <div class="form-group"><label for="link_type[]"><?php echo __('Link'); ?></label>
+        <div class="input">
+	        <select onchange="mage25_SlideshowItemChangeLinkType(this,'<?php echo $i; ?>')" name="link_type[]" class="form-control" style="width: 60%;">
+		        <option value="0" selected=""><?php echo __('None'); ?></option>
+		        <option value="1" <?php if($_slide['link_type'] == 1){ ?> selected="selected" <?php } ?>><?php echo __('Another Page'); ?></option>
+		        <option value="2" <?php if($_slide['link_type'] == 2){ ?> selected="selected" <?php } ?>><?php echo __('External URL'); ?></option>
+		  </select>
+	</div>
+    </div>
+    
+    <?php
+    $pageselectDiv = 'none;';
+    $externalDivSelect = 'none;';
+    if($_slide['link_type'] == 1){
+	    $pageselectDiv = 'block;';
+    }
+    
+    if($_slide['link_type'] == 2){
+	    $externalDivSelect = 'block;';
+    }
+    ?>
+    
+    
+    <div class="form-group" style="display:<?php echo $pageselectDiv; ?>" id="mage25_linktype_pageselector_cID_<?php echo $i; ?>"><label for="cID_<?php echo $i; ?>"><?php echo __('Select page'); ?></label>
+        <div class="input">
+            <?php echo $this->displayPagePicker('cID_'.$i, $_slide['page_id']) ?>
+        </div>
+    </div>
+    <div class="form-group" style="display:<?php echo $externalDivSelect; ?>" id="mage25_linktype_externallink_<?php echo $i; ?>"><label class="control-label" for="external_link[]"><?php echo __('External Link'); ?></label>
+        <div class="input"><textarea name="external_link[]" class="form-control"><?php echo $_slide['external_link']; ?></textarea></div>
+    </div>
+    <div class="form-group"><label class="control-label" for="link_text[]"><?php echo __('Link Text'); ?></label>
+        <div class="input"><input type="text" name="link_text[]" class="form-control" value="<?php echo $_slide['link_text']; ?>"></div>
+    </div>
+    <div class="form-group"><label for="link_type[]"><?php echo __('Target'); ?></label>
+        <div class="input">
+	        <select name="target[]" class="form-control" style="width: 60%;">
+		        <option value="_self"  <?php if($_slide['target'] == "_self"){ ?> selected="selected" <?php } ?>><?php echo __('_self'); ?></option>
+		        <option value="_blank"  <?php if($_slide['target'] == "_self"){ ?> selected="selected" <?php } ?>><?php echo __('_blank'); ?></option>
+		        <option value="_parent"  <?php if($_slide['target'] == "_self"){ ?> selected="selected" <?php } ?>><?php echo __('_parent'); ?></option>
+		        <option value="_top"  <?php if($_slide['target'] == "_self"){ ?> selected="selected" <?php } ?>><?php echo __('_top'); ?></option>
+		     </select>
+		  </div>
+    </div><button class="btn-danger" onclick="mage25_removeSlideItem('<?php echo $i; ?>')" type="button"><span><?php echo __('Remove Slide'); ?></span></button>&nbsp;<button type="button" class="btn-warning mage25_slide_move_up">Move Up<i class="icon-arrow-up icon-white"></i></button>&nbsp;<button type="button" class="btn-info mage25_slide_move_down">Move Down<i class="icon-arrow-down icon-white"></i></button>
+    
+    </div>
+					    	
+					    	
+					    	
+					    	<?php
+						    	$i++;
+				    	}
+				    	?>
+			    	
+			    	
+		    </div>
+		    	
+	    </div>
+	    
+	    	
+    </div>
+    
+    
+  </div>
+
+
+
+
+
+<script type="text/javascript">
+
+
+require(['jquery'], function($){
+	$(document).ready(function(){
+		
+		 $("#mage25_slideshow_type").change(function(){
+		    if($(this).val() == 'FILESET'){
+			    $("#mage25FilesetDropdownDiv").show();
+			    $("#mage25CustomSlideshowDiv").hide();
+		    }else{
+			    $("#mage25FilesetDropdownDiv").hide();
+			    $("#mage25CustomSlideshowDiv").show();
+		    }
+	    });
+	   // mage25_activateSlideUpDownClick();
+		
+	});
+	
+	var fileSelectorDiv = '<div class="form-group"><label class="control-label" for="[FIELD_ID]"><?php echo __('Choose File'); ?></label><div class="input"><div class="mage25_file_manager_select_file"><input type="hidden" value="0" name="[FIELD_ID]" id="mage25_filepicker_[FIELD_ID]_value"><div id="mage25_file_selector_click_[FIELD_ID]" onclick="mage25_storeFileInDivInput(\'[FIELD_ID]\')">Choose File</div></div></div></div>';
+	
+	
+	var title = '<div class="form-group"><label class="control-label" for="title[]"><?php echo __('Title'); ?></label><div class="input"><input type="text" name="title[]" class="form-control"></div></div>';
+	
+	var description = '<div class="form-group"><label class="control-label" for="description[]"><?php echo __('Description'); ?></label><div class="input"><textarea name="description[]" class="form-control"></textarea></div></div>';
+	
+	var linktypeSelection = '<div class="form-group"><label for="link_type[]"><?php echo __('Link'); ?></label><div class="input"><select  onchange="mage25_SlideshowItemChangeLinkType(this,\'[FIELD_ID]\')" name="link_type[]" class="form-control" style="width: 60%;"><option value="0" selected=""><?php echo __('None'); ?></option><option value="1"><?php echo __('Another Page'); ?></option><option value="2"><?php echo __('External URL'); ?></option></select></div></div>';
+	
+	var linktypePageSelector = '<div class="form-group" style="display:none;" id="mage25_linktype_pageselector_[FIELD_ID]"><label for="[FIELD_ID]"><?php echo __("Select page"); ?></label><div class="input"><div class="mage25_sitemap_select_page"><input type="hidden" value="" name="[FIELD_ID]" id="mage25_sitemap_page_[FIELD_ID]_value"><div id="mage25_sitemap_page_click_[FIELD_ID]" onclick="mage25_storePageInDivInput(\'[FIELD_ID]\')"><?php echo __('Choose Page'); ?></div></div></div></div>';
+	
+	var linktypeExternalLink = '<div class="form-group" style="display:none;" id="mage25_linktype_externallink_[FIELD_ID]"><label class="control-label" for="external_link[]"><?php echo __('External Link'); ?></label><div class="input"><textarea name="external_link[]" class="form-control"></textarea></div></div>';
+	
+	var linkText = '<div class="form-group"><label class="control-label" for="link_text[]"><?php echo __('Link Text'); ?></label><div class="input"><input type="text" name="link_text[]" class="form-control"></div></div>';
+	
+	var linkTarget = '<div class="form-group"><label for="link_type[]"><?php echo __('Target'); ?></label><div class="input"><select  name="target[]" class="form-control" style="width: 60%;"><option value="_self" selected=""><?php echo __('_self'); ?></option><option value="_blank"><?php echo __('_blank'); ?></option><option value="_parent"><?php echo __('_parent'); ?></option><option value="_top"><?php echo __('_top'); ?></option></select></div></div>';
+	
+	var closeDiv = '<button class="btn-danger" onclick="mage25_removeSlideItem(\'[FIELD_ID]\')" type="button"><span><?php echo __("Remove Slide") ?></span></button>&nbsp;<button type="button" class="btn-warning mage25_slide_move_up">Move Up<i class="icon-arrow-up icon-white"></i></button>&nbsp;<button type="button" class="btn-info mage25_slide_move_down">Move Down<i class="icon-arrow-down icon-white"></i></button>';
+	
+	var slides = <?php echo $i; ?>;
+	
+	mage25_addSlideItem = function(){
+		
+		var fsd = fileSelectorDiv.split("[FIELD_ID]").join('fID_'+slides);
+		
+		//var desc = description.split("[FIELD_ID]").join('fID_'+slides);
+		
+		var lts = linktypeSelection.split("[FIELD_ID]").join(slides);
+		
+		var ltpts = linktypePageSelector.split("[FIELD_ID]").join('cID_'+slides);
+		
+		var ltel = linktypeExternalLink.split("[FIELD_ID]").join(slides);
+		var cd = closeDiv.split("[FIELD_ID]").join(slides);
+		
+		var html = '<div class="mage25SlideItem" id="mage25SlideItem_'+slides+'">';
+		html = html+fsd+title+description+lts+ltpts+ltel+linkText+linkTarget+cd;
+		html = html +"</div>";
+		
+		//console.log(html);
+		
+		$("#mage25CustomSlideshowItemsDiv").prepend(html);
+		
+		//mage25_activateTinyMCEEditor("mage25-advanced-editor_"+slides);
+		
+		
+		slides++;
+		
+		//mage25_activateSlideUpDownClick();
+		
+	}
+	
+	//mage25_activateSlideUpDownClick = function(){
+		$('.mage25_slide_move_up').click(function(e){
+	        var jQueryparent = $(this).closest('.mage25SlideItem');
+	        jQueryparent.insertBefore(jQueryparent.prev());           
+	    
+	    });
+	    
+	    
+	    $('.mage25_slide_move_down').click(function(e){
+	        var jQueryparent = $(this).closest('.mage25SlideItem');
+	        
+	        jQueryparent.insertAfter(jQueryparent.next());           
+	    
+	    });
+	//}
+	
+	mage25_SlideshowItemChangeLinkType = function(obj, item){
+		$("#mage25_linktype_pageselector_cID_"+item).hide();
+		$("#mage25_linktype_externallink_"+item).hide();
+		
+		if($(obj).val() == 1){
+			$("#mage25_linktype_pageselector_cID_"+item).show();
+			$("#mage25_linktype_externallink_"+item).hide();
+		}
+		
+		if($(obj).val() == 2){
+			$("#mage25_linktype_pageselector_"+item).hide();
+			$("#mage25_linktype_externallink_"+item).show();
+		}
+		
+	}
+	
+	mage25_removeSlideItem = function(item){
+		if(confirm('<?php echo __("Are you sure do you want to remove this slide?"); ?>')){
+			$("#mage25SlideItem_"+item).remove();
+		}
+	}
+	
+	
+	
+});
+	</script>
+
+
+
+
+

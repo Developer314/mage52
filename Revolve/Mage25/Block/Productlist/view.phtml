@@ -1,0 +1,52 @@
+<?php
+	$products = $blockObject->getProductCollection($blockData);
+	$mediaUrl = $blockObject->getMediaUrl();
+	$currency = $blockObject->getStoreCurrency();
+?>
+<div class="products wrapper list products-list">
+<?php if($heading !=''){ ?><h2><?php echo $heading; ?></h2> <?php } ?>
+<div class="products wrapper grid products-grid">
+	<ol class="products list items product-items">
+<?php $i=1; foreach($products as $_product){ ?>
+		<?php  //echo $i.'-'.$_product->getName() . ' -  - ' . $_product->getPrice() . '<br />'; ?>
+		<li class="item product product-item" style="float: left">
+			<div class="product-item-info-1">
+                        <a href="<?php echo $_product->getProductUrl() ?>" class="product photo product-item-photo" title="<?php echo $_product->getName() ; ?>">
+                         	
+                         	
+                         	<span class="product-image-container" style="width:240px;">
+    <span class="product-image-wrapper" style="padding-bottom: 125%;">
+        <img class="product-image-photo" src="<?php echo $mediaUrl.'catalog/product/'.$_product->getData('image'); ?>"  alt="<?php echo $_product->getName() ; ?>">
+        </span>
+</span>
+                         	
+                         	
+                         </a>
+                         
+                         <div class="product details product-item-details-1">
+	                         <strong class="product name product-item-name">
+						<a  title="<?php echo $_product->getName() ; ?>" class="product-item-link" href="<?php echo $_product->getProductUrl() ?>"><?php echo $_product->getName() ; ?></a>
+						  </strong>
+                         </div>
+                         
+                         <div class="price-box price-final_price" >
+    
+
+<span class="price-container price-final_price tax weee">
+        <span id="product-price-1097" >
+        <span class="price"><?php echo $currency.$_product->getPrice(); ?></span>    </span>
+        </span>
+
+</div>  
+                         
+                         
+                         
+			</div>
+		</li>
+<?php $i++; } ?>
+	</ol>
+</div>
+	<div class="toolbar toolbar-products" style="clear: both;">
+			<?php echo $blockObject->getPager($products); ?>
+	</div>
+</div>

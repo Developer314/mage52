@@ -1,0 +1,21 @@
+{
+    "name": "revolve/module-mage25",
+    "description": "Mage25 CMS Solution",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "email": "manup.rav@gmail.com",
+            "name": "Ratheesh Raveendran"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Revolve\\Mage25\\": ""
+        },
+        "files": [
+            "registration.php"
+        ]
+    }
+}

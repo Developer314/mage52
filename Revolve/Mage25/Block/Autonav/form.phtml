@@ -1,0 +1,102 @@
+<?php
+if($blockData['bID'] == 0){
+	$blockData['orderBy']='';
+	$blockData['displayPages']='';
+	$blockData['displayPagesCID']='';
+	$blockData['displaySubPages']='';
+	$blockData['displaySubPageLevels']='';
+
+}
+$orderBy = $blockData['orderBy'];
+$displayPages = $blockData['displayPages'];
+$displayPagesCID = $blockData['displayPagesCID'];
+$displaySubPages = $blockData['displaySubPages'];
+$displaySubPageLevels = $blockData['displaySubPageLevels'];
+
+
+?>
+
+<div id="mage25-block-fields">
+  <div class="mage25-block-field-group">
+    
+    <br>
+    <!-- Image input-->
+    <div class="clearfix">
+      <label class="control-label" for="orderBy"><?php echo __('Pages Should Appear'); ?></label>
+      <div class="input">
+        <select id="orderBy" name="orderBy" class="form-control">
+          <option value="display_asc" <?php if(isset($orderBy) and $orderBy == 'display_asc'){ ?> selected="selected" <?php  } ?>><?php echo __('in their sitemap order.'); ?></option>
+         <!-- <option value="chrono_desc" <?php if(isset($orderBy) and $orderBy == 'chrono_desc'){ ?> selected="selected" <?php  } ?>>with the most recent first.</option>
+          <option value="chrono_asc" <?php if(isset($orderBy) and $orderBy == 'chrono_asc'){ ?> selected="selected" <?php  } ?>>with the earliest first.</option>
+          <option value="alpha_asc" <?php if(isset($orderBy) and $orderBy == 'alpha_asc'){ ?> selected="selected" <?php  } ?>>in alphabetical order.</option>
+          <option value="alpha_desc" <?php if(isset($orderBy) and $orderBy == 'alpha_desc'){ ?> selected="selected" <?php  } ?>>in reverse alphabetical order.</option>
+          <option value="display_desc" <?php if(isset($orderBy) and $orderBy == 'display_desc'){ ?> selected="selected" <?php  } ?>>in reverse sitemap order.</option>-->
+        </select>
+      </div>
+    </div>
+   
+    
+    <!-- Text input-->
+    <div class="clearfix">
+      <label class="control-label" for="displayPages"><?php echo __('Display Pages'); ?></label>
+      <div class="input">
+        <select id="displayPages" name="displayPages" class="form-control">
+          <option value="top" <?php if(isset($displayPages) and $displayPages == 'top'){ ?> selected="selected" <?php  } ?>><?php echo __('At the top level.'); ?></option>
+         <!-- <option value="second_level" <?php if(isset($displayPages) and $displayPages == 'second_level'){ ?> selected="selected" <?php  } ?>><?php echo __('At the second level.'); ?></option>
+          <option value="third_level" <?php if(isset($displayPages) and $displayPages == 'third_level'){ ?> selected="selected" <?php  } ?>><?php echo __('At the third level.'); ?></option>
+          <option value="above" <?php if(isset($displayPages) and $displayPages == 'above'){ ?> selected="selected" <?php  } ?>><?php echo __('At the level above.'); ?></option>-->
+          <option value="current" <?php if(isset($displayPages) and $displayPages == 'current'){ ?> selected="selected" <?php  } ?>><?php echo __('At the current level.'); ?></option>
+         <!-- <option value="below" <?php if(isset($displayPages) and $displayPages == 'below'){ ?> selected="selected" <?php  } ?>><?php echo __('At the level below.'); ?></option>-->
+          <option value="custom" <?php if(isset($displayPages) and $displayPages == 'custom'){ ?> selected="selected" <?php  } ?>><?php echo __('Beneath a particular page'); ?></option>
+        </select>
+      </div>
+    </div>
+    
+    <!-- Select Basic -->
+    <div class="clearfix" id="displayPagesCidDivShowHide" <?php if(isset($displayPages) and $displayPages == 'custom'){ ?> style="display:block;" <?php }else{ ?>  style="display:none;" <?php } ?>>
+    <label class="col-md-4 control-label" for="displayPages"><?php echo __('Parent Page'); ?></label>
+    <div class="input">
+      <?php echo $blockObject->displayPagePicker('displayPagesCID', $displayPagesCID); ?>
+    </div>
+  </div>
+  <!-- Text input-->
+  <div class="clearfix">
+    <label class="control-label" for="displaySubPages"><?php echo __('Sub Pages to Display'); ?></label>
+    <div class="input">
+      <select id="displaySubPages" name="displaySubPages" class="form-control">
+       <!-- <option value="none" <?php if(isset($displaySubPages) and $displaySubPages == 'none'){ ?> selected="selected" <?php  } ?>>None</option>-->
+        <option value="relevant" <?php if(isset($displaySubPages) and $displaySubPages == 'relevant'){ ?> selected="selected" <?php  } ?>><?php echo __('Relevant sub pages.'); ?></option>
+       <!-- <option value="relevant_breadcrumb" <?php if(isset($displaySubPages) and $displaySubPages == 'relevant_breadcrumb'){ ?> selected="selected" <?php  } ?>>Display breadcrumb trail.</option>
+        <option value="all" <?php if(isset($displaySubPages) and $displaySubPages == 'all'){ ?> selected="selected" <?php  } ?>>Display all.</option>-->
+      </select>
+    </div>
+  </div>
+  
+  <!-- Text input-->
+  <div class="clearfix">
+    <label class="col-md-4 control-label" for="displaySubPageLevels"><?php echo __('Sub-Page Levels'); ?></label>
+    <div class="input">
+      <select id="displaySubPageLevels" name="displaySubPageLevels" class="form-control">
+        <option value="enough" <?php if(isset($displaySubPageLevels) and $displaySubPageLevels == 'enough'){ ?> selected="selected" <?php  } ?>><?php echo __('Display sub pages to current.'); ?></option>
+        <!--<option value="enough_plus1" <?php if(isset($displaySubPageLevels) and $displaySubPageLevels == 'enough_plus1'){ ?> selected="selected" <?php  } ?>>Display sub pages to current +1</option>
+        <option value="all" <?php if(isset($displaySubPageLevels) and $displaySubPageLevels == 'all'){ ?> selected="selected" <?php  } ?>>Display all.</option>
+        <option value="custom" <?php if(isset($displaySubPageLevels) and $displaySubPageLevels == 'custom'){ ?> selected="selected" <?php  } ?>>Display a custom amount.</option>-->
+      </select>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+    require(['jquery'], function ($) {
+	     $(document).ready(function(){
+	    $("#displayPages").change(function(){
+		    if($(this).val() == 'custom'){
+			    $("#displayPagesCidDivShowHide").show();
+		    }else{
+			    $("#displayPagesCidDivShowHide").hide();
+		    }
+	    });
+       });
+       
+    });
+</script>

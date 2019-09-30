@@ -1,0 +1,21 @@
+<?php
+	$archives = $this->registry->registry('archives');
+	$block_factory = $this->registry->registry('block_factory');
+	
+	if(sizeof($archives)>0){	
+	echo "<div id='mage25_archive_blocks_list'>";
+	foreach($archives as $b){
+		$blockData = $block_factory->getBlockDataBybIDAndBtID($b['bID'],$b['btID']);
+		echo '<div class="mage25-block" id="mage25_archive_block_'.$b['arID'].'_'.$b['btID'].'_'.$b['bID'].'" style="max-height:200px;" onclick="mage25_showArchieveMenu(\''.$b['arID'].'\', \''.$b['btID'].'\', \''.$b['bID'].'\', \''.$blockData['blockType']['btName'].'\')" >';
+		$blockData['area_block'] = $b;
+		$class = $blockData['blockType']['btHandle'];
+		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+		$field_helper = $objectManager->get($class);
+		$field_helper->view($blockData);
+		echo "</div>";
+	}
+	echo "</div>";
+	}else{
+		echo "<h2>".__("Sorry no blocks in archive")."</h2>";
+	}
+	?>

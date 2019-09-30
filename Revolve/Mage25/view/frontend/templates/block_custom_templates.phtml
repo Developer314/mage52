@@ -1,0 +1,91 @@
+<div class="mage25-ui">
+
+	<div  id="mage25_main_div">
+<?php
+	
+	$global_block_data = $this->registry->registry('block_type_data');
+	
+	$arID = $global_block_data['arID'];
+	$bID = $global_block_data['bID'];
+	$btID = $global_block_data['btID'];
+	$block_action = $global_block_data['block_action'];
+	$class = $global_block_data['block_class'];
+	$current_template = $global_block_data['current_template'];
+	$templates = $global_block_data['templates'];
+	?>
+	<form class="mage25_block_form" id="mage25_block_choose_custom_template_form" action="<?php echo $this->getSiteUrl(); ?>mage25/blocks/add" method="POST" onsubmit="return mage25_updateCustomTemplate(this); return false;">
+		<input type="hidden" name="action" value="update_block_update_custom_template" />
+		<input type="hidden" name="block_action" value="<?php echo $block_action; ?>" />
+		<input type="hidden" name="arID" value="<?php echo $arID; ?>" />
+		<input type="hidden" name="btID" value="<?php echo $btID; ?>" />
+		<input type="hidden" name="bID" value="<?php echo $bID; ?>" />
+		<table class="table table-bordered">
+			<tr>
+				<td>
+		<select name="block_template" class="form-control" id="mage25_custom_template_selection">
+			<option value=""><?php echo __('Select Template'); ?></option>
+			<?php foreach($templates as $k=>$t){
+				?>
+				<option value="<?php echo $k; ?>" <?php if($current_template == $k){ ?> selected="selected" <?php } ?>><?php echo $t; ?></option>
+				<?php
+					
+			} ?>
+		</select>
+				</td>
+				<td>
+		<button class="btn btn-success"  type="submit"><span><?php echo __('Save Template'); ?></span></button>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					
+					<button type="button" class="btn btn-info" title="<?php echo __("Other vendor Custom Templates"); ?>" onclick="mage25_AssignCustomTemplates('<?php echo $btID; ?>');"><?php echo __("Manage Custom Templates"); ?>
+					
+				</td>
+			</tr>
+	</form>
+	
+	
+	
+	<script>
+		
+		require(['jquery'], function($, tinyMCE){
+		
+		mage25_AssignCustomTemplates = function(btID){
+			mage25_destroyCurrentModel();
+		var data = {action:'block_custom_templates_other_vendor','btID':btID};
+		mage25_loadModel("Other vendors Custom Templates", DIRNAME_APP+'/mage25/blocks/add','POST', data);
+	}
+		
+		mage25_updateCustomTemplate = function(form){
+		
+			var url = $(form).attr('action');
+			mage25_showLoader();
+		    $.ajax({
+		           type: "POST",
+		           url: url,
+		           data: $(form).serialize(),
+		           success: function(data)
+		           {
+			          var obj = $.parseJSON(data);
+			          mage25_hideLoader();
+			          if(obj.success){
+			         	 	mage25_showGlobalMessageDiv(obj.message, 'success');
+			          }else{
+				          mage25_showGlobalMessageDiv(obj.message, 'danger');
+			          }
+		               
+		           }
+		         });
+			return false;
+			
+		}
+		
+		
+		
+		});
+		
+		
+	</script>
+	</div>
+	</div>

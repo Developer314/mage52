@@ -1,0 +1,282 @@
+<?php
+$savedSlides = $blockObject->getSlides($bID);
+
+/*echo "<pre>";
+print_r($savedSlides);
+die();
+*/
+?>
+<div class="widget block block-static-block">
+    <div class="blocks-promo">
+        <?php
+        $_slides = $savedSlides[5];
+
+        if($_slides['fID'] > 0){
+
+
+            $fileData = $this->getFileByID($_slides['fID']);
+            $imagePath = $this->getImageForView($_slides['fID']);
+            $title = $_slides['title'];
+            $description = $_slides['description'];
+            $target = $_slides['target'];
+            $link_text = $_slides['link_text'];
+            $linkToUrl = '';
+
+            if($_slides['link_type'] == 1){
+                $pageID = $_slides['page_id'];
+                $linkToUrl = $this->getLink($pageID);
+            }
+
+            if($_slides['link_type'] == 2 and trim($_slides['external_link']) !=''){
+                $linkToUrl = $_slides['external_link'];
+            }
+
+
+
+            ?>
+            <?php if($linkToUrl !=''){ ?>
+                <a href="<?php echo $linkToUrl; ?>" class="block-promo home-main" title="<?php echo $title; ?>">
+            <?php } ?>
+            <img src="<?php echo $imagePath; ?>" alt="<?php echo $title; ?>">
+            <span class="content bg-white">
+           <?php if($title !=''){ ?><span class="info"><?php echo $title; ?></span> <?php } ?>
+                <?php if($description !=''){ ?><strong class="title"><?php echo $description; ?></strong><?php } ?>
+                <?php if($link_text !=''){ ?> <span class="action more button"><?php echo $link_text; ?></span><?php } ?>
+       </span>
+            <?php if($linkToUrl !=''){ ?>
+                </a>
+            <?php } ?>
+        <?php } ?>
+
+        <div class="block-promo-wrapper block-promo-hp">
+
+
+
+
+            <?php
+            $_slides = $savedSlides[4];
+
+            if($_slides['fID'] > 0){
+
+
+                $fileData = $this->getFileByID($_slides['fID']);
+                $imagePath = $this->getImageForView($_slides['fID']);
+                $title = $_slides['title'];
+                $description = $_slides['description'];
+                $target = $_slides['target'];
+                $link_text = $_slides['link_text'];
+                $linkToUrl = '';
+
+                if($_slides['link_type'] == 1){
+                    $pageID = $_slides['page_id'];
+                    $linkToUrl = $this->getLink($pageID);
+                }
+
+                if($_slides['link_type'] == 2 and trim($_slides['external_link']) !=''){
+                    $linkToUrl = $_slides['external_link'];
+                }
+
+
+
+                ?>
+
+
+                <?php if($linkToUrl !=''){ ?>
+                    <a href="<?php echo $linkToUrl; ?>" class="block-promo home-pants">
+                <?php } ?>
+                <img src="<?php echo $imagePath; ?>" alt="">
+                <span class="content">
+               <?php if($title !=''){ ?><strong class="title"><?php echo $title; ?></strong><?php } ?>
+                    <?php if($description !=''){ ?> <span class="info"><?php echo $description; ?></span><?php } ?>
+                    <?php if($link_text !=''){ ?> <span class="action more icon"><?php echo $link_text; ?></span><?php } ?>
+           </span>
+                <?php if($linkToUrl !=''){ ?>
+                    </a>
+                <?php } ?>
+
+            <?php } ?>
+
+
+            <?php
+            $_slides = $savedSlides[3];
+
+            if($_slides['fID'] > 0){
+
+
+                $fileData = $this->getFileByID($_slides['fID']);
+                $imagePath = $this->getImageForView($_slides['fID']);
+                $title = $_slides['title'];
+                $description = $_slides['description'];
+                $target = $_slides['target'];
+                $link_text = $_slides['link_text'];
+                $linkToUrl = '';
+
+                if($_slides['link_type'] == 1){
+                    $pageID = $_slides['page_id'];
+                    $linkToUrl = $this->getLink($pageID);
+                }
+
+                if($_slides['link_type'] == 2 and trim($_slides['external_link']) !=''){
+                    $linkToUrl = $_slides['external_link'];
+                }
+
+
+
+                ?>
+                <?php if($linkToUrl !=''){ ?>
+                    <a href="<?php echo $linkToUrl; ?>" class="block-promo home-t-shirts">
+                <?php } ?>
+                <span class="image"><img src="<?php echo $imagePath; ?>" alt=""></span>
+                <span class="content">
+               <?php if($title !=''){ ?><strong class="title"><?php echo $title; ?></strong><?php } ?>
+                    <?php if($description !=''){ ?> <span class="info"><?php echo $description; ?></span><?php } ?>
+                    <?php if($link_text !=''){ ?> <span class="action more icon"><?php echo $link_text; ?></span><?php } ?>
+           </span>
+                <?php if($linkToUrl !=''){ ?>
+                    </a>
+                <?php } ?>
+
+            <?php } ?>
+
+            <?php
+            $_slides = $savedSlides[2];
+
+            if($_slides['fID'] > 0){
+
+
+                $fileData = $this->getFileByID($_slides['fID']);
+                $imagePath = $this->getImageForView($_slides['fID']);
+                $title = $_slides['title'];
+                $description = $_slides['description'];
+                $target = $_slides['target'];
+                $link_text = $_slides['link_text'];
+                $linkToUrl = '';
+
+                if($_slides['link_type'] == 1){
+                    $pageID = $_slides['page_id'];
+                    $linkToUrl = $this->getLink($pageID);
+                }
+
+                if($_slides['link_type'] == 2 and trim($_slides['external_link']) !=''){
+                    $linkToUrl = $_slides['external_link'];
+                }
+
+
+
+                ?>
+                <?php if($linkToUrl !=''){ ?>
+                    <a href="http://demo.mage5.com/collections/erin-recommends.html" class="block-promo home-erin">
+                <?php } ?>
+
+
+                <img src="<?php echo $imagePath; ?>" alt="">
+                <span class="content">
+               <?php if($title !=''){ ?><strong class="title"><?php echo $title; ?></strong><?php } ?>
+                    <?php if($description !=''){ ?> <span class="info"><?php echo $description; ?></span><?php } ?>
+                    <?php if($link_text !=''){ ?> <span class="action more icon"><?php echo $link_text; ?></span><?php } ?>
+           </span>
+
+
+                <?php if($linkToUrl !=''){ ?>
+                    </a>
+                <?php } ?>
+            <?php } ?>
+
+
+            <?php
+            $_slides = $savedSlides[1];
+
+            if($_slides['fID'] > 0){
+
+
+                $fileData = $this->getFileByID($_slides['fID']);
+                $imagePath = $this->getImageForView($_slides['fID']);
+                $title = $_slides['title'];
+                $description = $_slides['description'];
+                $target = $_slides['target'];
+                $link_text = $_slides['link_text'];
+                $linkToUrl = '';
+
+                if($_slides['link_type'] == 1){
+                    $pageID = $_slides['page_id'];
+                    $linkToUrl = $this->getLink($pageID);
+                }
+
+                if($_slides['link_type'] == 2 and trim($_slides['external_link']) !=''){
+                    $linkToUrl = $_slides['external_link'];
+                }
+
+
+
+                ?>
+                <?php if($linkToUrl !=''){ ?>
+
+                    <a href="<?php echo $linkToUrl; ?>" class="block-promo home-performance">
+
+                <?php } ?>
+
+
+                <img src="<?php echo $imagePath; ?>" alt="">
+                <span class="content bg-white">
+              <?php if($title !=''){ ?><strong class="title"><?php echo $title; ?></strong><?php } ?>
+                    <?php if($description !=''){ ?> <span class="info"><?php echo $description; ?></span><?php } ?>
+                    <?php if($link_text !=''){ ?> <span class="action more icon"><?php echo $link_text; ?></span><?php } ?>
+           </span>
+
+
+                <?php if($linkToUrl !=''){ ?>
+                    </a>
+                <?php } ?>
+            <?php } ?>
+
+            <?php
+            $_slides = $savedSlides[0];
+
+            if($_slides['fID'] > 0){
+
+
+                $fileData = $this->getFileByID($_slides['fID']);
+                $imagePath = $this->getImageForView($_slides['fID']);
+                $title = $_slides['title'];
+                $description = $_slides['description'];
+                $target = $_slides['target'];
+                $link_text = $_slides['link_text'];
+                $linkToUrl = '';
+
+                if($_slides['link_type'] == 1){
+                    $pageID = $_slides['page_id'];
+                    $linkToUrl = $this->getLink($pageID);
+                }
+
+                if($_slides['link_type'] == 2 and trim($_slides['external_link']) !=''){
+                    $linkToUrl = $_slides['external_link'];
+                }
+
+
+
+                ?>
+
+                <?php if($linkToUrl !=''){ ?>
+
+                    <a href="<?php echo $linkToUrl; ?>" class="block-promo home-eco">
+                <?php } ?>
+                <img src="<?php echo $imagePath; ?>" alt="">
+                <span class="content bg-white">
+
+              <?php if($title !=''){ ?><strong class="title"><?php echo $title; ?></strong><?php } ?>
+                    <?php if($description !=''){ ?> <span class="info"><?php echo $description; ?></span><?php } ?>
+                    <?php if($link_text !=''){ ?> <span class="action more icon"><?php echo $link_text; ?></span><?php } ?>
+
+
+
+           </span>
+                <?php if($linkToUrl !=''){ ?>
+                    </a>
+
+                <?php } ?>
+            <?php } ?>
+
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<?php
+	$files = $this->registry->registry('files');
+	$fsID = $this->registry->registry('fsID');
+	$object = $this->registry->registry('object');
+?>
+<form class="form-horizontal" method="post" id="mage25_fileset_file_order" onsubmit="mage25_SaveFileForm('mage25_fileset_file_order');" action="<?php echo $this->getSiteUrl(); ?>mage25/filemanager/manage" target="mage25_upload_target" enctype="multipart/form-data">
+		        <input type="hidden" name="action" value="arrange_sortorder_fileset_files" />
+		        <input type="hidden" name="fsID"  value="<?php echo $fsID; ?>" />
+		        <h3><?php echo __("Drag to change order of files"); ?></h3>
+		        
+<ul class="mage25_files_sortable">
+	<?php foreach($files as $f){ ?>
+	
+	<li>
+	<div>
+		<?php echo $object->getMediaFile($f['fPath'], 75, 0); ?>
+		<input type="hidden" name="fID[]" value="<?php echo $f['fID']; ?>" />
+		<?php //echo $f['sort_order']; ?>
+		</div>
+	
+	</li>
+	<?php } ?>
+</ul>
+<button type="submit" class="btn-small btn-success"><span><?php echo __('Save Order'); ?></span></button>
+</form>
+
+<script>
+  require(['jquery'], function ($) {
+       
+       	//Not sure Tabs are not working, so going for a custom jquery funcitons
+       
+       $(document).ready(function(){
+    $( ".mage25_files_sortable" ).sortable();
+    $( ".mage25_files_sortable" ).disableSelection();
+    });
+       
+    });
+</script>

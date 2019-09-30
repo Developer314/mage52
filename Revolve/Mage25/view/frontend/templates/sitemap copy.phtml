@@ -1,0 +1,115 @@
+<?php
+	$object = $this->registry->registry('object');
+	$element = $this->registry->registry('element');
+	?>
+<div class="mage25-ui" id="mage25_popup_wrapper">
+<ul class="nav nav-tabs">
+  <li class="active"><a id="mage25_li_files" href="#mage25_catalog_categories"><?php echo __('Categories'); ?></a></li>
+  <li><a id="mage25_li_add_files" href="#mage25_catalog_products"><?php echo __('Products'); ?></a></li>
+  <li><a id="mage25_li_file_sets" href="#mage25_catalog_cms"><?php echo __('CMS Pages'); ?></a></li>
+</ul>
+<div class="tab-content">
+	
+	<div id="mage25_catalog_categories" class="tab-pane active">
+		
+		<div id="tree1"></div>
+		
+		
+		<?php
+$rootcatId= 1;
+$categories = $object->getSubCategories($rootcatId);
+function  get_categories($categories, $object) {
+    $array= '<ul>';
+    foreach($categories as $category) {
+        
+        $class = 'file';
+         if($category->hasChildren()) {
+         $class = 'folder';
+         }
+         
+         $onclickFunction = '';
+         if(isset($elementid) and $elementid !=''){
+	         $onclickFunction = 'onclick="mage25_select_sitemap_link(\''.$elementid.'\', \'category-'.$category->getId().'\',\''.$category->getName().'\')"';
+         }
+         
+         //Mage::getUrl($cat->getUrlPath())
+         
+        $array .= '<li>'.
+        '<span class="'.$class.'"><a href="#" '.$onclickFunction.'>' . $category->getName() ."</a></span>\n";
+        if($category->hasChildren()) {
+            $children = $object->getSubCategories($category->getId());
+            
+             $array .=  get_categories($children,$object);
+            }
+         $array .= '</li>';
+    }
+    return  $array . '</ul>';
+}
+
+
+
+
+if(sizeof($categories)>0){
+$categoriesTree =   get_categories($categories, $object);
+}
+echo "<ul id=\"mage25_catalog_tree\" class=\"filetree\">";
+echo "<li><span class='folder'><a href=\"#\" onclick=\"mage25_select_sitemap_link('internal_url', 'home-1','Home')\" class=\"\">Home</a></span>";
+
+echo $categoriesTree;
+echo "</li>";
+echo "</ul>";
+?>
+
+<script type="text/javascript">
+require(['jquery'], function ($) {
+    $(document).ready(function(){
+		
+		
+			$("ul.nav.nav-tabs li a").click(function(){
+	       	var contentdiv = $(this).attr('href');
+	       	$("ul.nav.nav-tabs li").removeClass('active');
+	       	$(this).parent('li').addClass('active');
+	       	
+	        $(".tab-content .tab-pane").removeClass('active');
+	       	$(".tab-content "+contentdiv).addClass('active');
+		      });
+		
+		
+		//$("#mage25_catalog_tree").treeview();
+		
+		var data = [
+			    {
+			        name: 'node1',
+			        children: [
+			            { name: 'child1' },
+			            { name: 'child2' }
+			        ]
+			    },
+			    {
+			        name: 'node2',
+			        children: [
+			            { name: 'child3' }
+			        ]
+			    }
+			];
+			
+		
+		$('#tree1').tree({
+        	data: data
+    	});
+		
+		
+	});
+       
+});
+</script>
+</div>
+	
+	<div class="mage25_catalog_products" class="tab-pane">
+		
+	</div>
+	
+	
+	
+</div>
+</div>

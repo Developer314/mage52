@@ -1,0 +1,14 @@
+<?php
+	$selectedBlocks = explode(',', $content);
+	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+	$field_helper = $objectManager->get('Magento\Cms\Block\Block');
+	echo '<div class="mage25_static_block_container">';
+	foreach($selectedBlocks as $_block){
+		$blk = $blockObject->getBlockByID($_block);
+		echo '<div class="mage25_static_block">';
+		echo $field_helper->setBlockId($blk->getIdentifier())->toHtml();
+		echo '</div>';
+		
+	}
+	echo '</div>';
+?>

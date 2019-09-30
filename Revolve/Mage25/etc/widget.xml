@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:helloworld:Magento_Widget:etc/widget.xsd">
+	<widget class="Revolve\Mage25\Block\Widget\Arealayouts" id="mage25_area_layouts">
+		<label>Area Layout</label>
+		<description>Define Containers, Rows, Columns </description>
+		<parameters>
+			
+			<parameter name="is_global" sort_order="9" xsi:type="select" visible="true" source_model="Magento\Config\Model\Config\Source\Yesno">
+				<label>Is Area Global ?</label>
+			</parameter>
+			
+			<parameter name="layout_title" sort_order="10" visible="true" xsi:type="text">
+				<label>Layout Title</label>
+			</parameter>
+			
+			
+			
+			<parameter name="container_class" sort_order="11" visible="true" xsi:type="text">
+				<label>Container Class</label>
+			</parameter>
+			
+			<parameter name="container_bg_image" sort_order="12" visible="true" xsi:type="text">
+				<label>Background Image ID (Mage25 Filemanager)</label>
+			</parameter>
+			
+			<parameter name="row_class" sort_order="13" visible="true" xsi:type="text">
+				<label>Row Class</label>
+			</parameter>
+			
+			<parameter name="num_rows" sort_order="14" visible="true" xsi:type="text">
+				<label>Number Of Rows</label>
+			</parameter>
+			
+			<parameter name="num_columns" sort_order="15" visible="true" xsi:type="text">
+				<label>Number Of Columns</label>
+			</parameter>
+			
+			<parameter name="column_class" sort_order="16" visible="true" xsi:type="text">
+				<label>Column Class</label>
+			</parameter>
+			
+			
+			
+			
+			
+			
+		</parameters>
+	</widget>
+</widgets>

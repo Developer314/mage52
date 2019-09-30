@@ -1,0 +1,290 @@
+<?php
+$FileSets = $this->registry->registry('file_sets');
+$elementid = $this->registry->registry('elementid');
+$fieldtype = $this->registry->registry('fieldtype');
+?>
+
+
+
+<div class="mage25-ui" id="mage25_popup_wrapper">
+<ul class="nav nav-tabs">
+  <li class="active"><a id="mage25_li_files" href="#mage25_files"><?php echo __('Files'); ?></a></li>
+  <li><a id="mage25_li_add_files" href="#mage25_add_files"><?php echo __('Add Files'); ?></a></li>
+  <li><a id="mage25_li_file_sets" href="#mage25_file_sets"><?php echo __('File Sets'); ?></a></li>
+  <li><a id="mage25_li_file_remote" href="#mage25_file_remote"><?php echo __('Remote Files'); ?></a></li>
+  <li><a id="mage25_li_file_incoming" href="#mage25_file_incoming"><?php echo __('Incoming Files'); ?></a></li>
+</ul>
+
+<input type="hidden" id="mage25_list_file_elementid" value="<?php echo $elementid; ?>" />
+<input type="hidden" id="mage25_list_file_fieldtype" value="<?php echo $fieldtype; ?>" />
+
+
+<div class="tab-content">
+	
+	<div id="mage25_files" class="tab-pane active">
+		
+		<div id="mage25_file_collection_div_parent"></div>
+	</div>
+	<div id="mage25_add_files" class="tab-pane">
+		
+		
+	    
+	      <div id="mage25_file_upload_add_form_div">
+	        <form class="form-horizontal" method="post" id="mage25_fileupload_form" onsubmit="mage25_SaveFileForm('mage25_fileupload_form');" action="<?php echo $this->getSiteUrl(); ?>mage25/filemanager/manage" target="mage25_upload_target" enctype="multipart/form-data">
+		        <input type="hidden" name="action" value="upload_files" />
+		        
+	          <table class="table table-bordered table-hover">
+	
+	            <tr>
+	              <td align="right"><?php echo __('Choose File (s)'); ?></td>
+	              <td><input type="file" name="mage25_file_upload[]" id="multi_file_data" multiple="multiple"></td>
+	            </tr>
+	
+	
+	
+	            <tr>
+	              <td align="right"><?php echo __('File Set'); ?></td>
+	              <td><select multiple="multiple" id="mage25_fileset_select_lists" name="filesets[]">
+	                  <?php foreach($FileSets as $k){ ?>
+	                  <option value="<?php echo $k['fsID']; ?>"><?php echo $k['fsName']; ?></option>
+	                  <?php } ?>
+	                </select></td>
+	            </tr>
+	            <tr>
+	              <td align="right"><?php echo __('Caption'); ?></td>
+	              <td><input type="text" name="fName" id="mage25_fName" class="form-control" placeholder="Caption"></td>
+	            </tr>
+	            <tr>
+	              <td align="right"><?php echo __('Description'); ?></td>
+	              <td><textarea name="fDescription" id="mage25_fDescription" class="form-control" placeholder="Description"></textarea></td>
+	            </tr>
+	            <tr>
+	              <td ><div style="display: none"><input type="reset" id="mage25_fileupload_form_reset" value="Reset" /></div></td>
+	              <td><button type="submit" class="btn-small btn-success"><span><?php echo __('Upload'); ?></span></button></td>
+	            </tr>
+	          </table>
+	        </form>
+	      </div>
+	      <div id="mage25_file_upload_edit_form_div" style="display:none;"> </div>
+	      <div class="progress progress-striped active">
+	        <div class="bar" style="width: 0%;"></div>
+	      </div>
+	      <div class="percent"></div>
+	      <div id="status"></div>
+	    </div>
+	<div id="mage25_file_sets" class="tab-pane">
+	      
+	
+	      <div id="files_fileset_image" style="display:none;"></div>
+	
+	
+	      
+	      <table class="table table-bordered table-hover" id="mage25_fileset_table_list">
+	        <thead>
+	          <tr>
+	
+	            <th><?php echo __('Set Name'); ?></th>
+	            <th><?php echo __('Edit'); ?></th>
+	            <th><?php echo __('Browse and Change Order'); ?></th>
+	            <th><?php echo __('Delete'); ?></th>
+	          </tr>
+	        </thead>
+	        
+	        
+	        <tbody>
+		      
+	          <?php foreach($FileSets as $k){ ?>
+	          <tr>
+	
+	            <td><?php echo $k['fsName']; ?></td>
+	            <td><button onclick="mage25_editFileset('<?php echo $k['fsID']; ?>','<?php echo $k['fsName']; ?>')" class="btn-success btn-small" type="button"><span><?php echo __('Edit'); ?></span></button></td>
+	
+	            <td><button onclick="mage25_listFilesfromFileset('<?php echo $k['fsID']; ?>')" class="btn-info btn-small" type="button"><span><?php echo __('Browse/Order Files'); ?></span></button></td>
+	            <td><button onclick="mage25_deleteFileSet('<?php echo $k['fsID']; ?>');" class="btn-danger btn-small" type="button"><span><?php echo __('Delete'); ?></span></button></td>
+	          </tr>
+	          <?php } ?>
+	         
+	        </tbody>
+	      </table>
+	
+	      
+	      <div class="mage25_add_fileset">
+	        <table class="table table-bordered table-hover">
+	          <tr>
+	            <td class="text-right">
+		            <input type="hidden" id="mage25_editingFsId" value="0" >
+		            <input type="text" id="mage25_fsName" placeholder="<?php echo __('Fileset Name'); ?>" class="form-control" ></td>
+	            <td><button type="button" class="btn-small btn-success" onclick="mage25_addUpdateFileSet()"><span><?php echo __('Save'); ?></span></button>&nbsp;&nbsp;&nbsp;<button type="button" class="btn-small btn-info" onclick="mage25_addUpdateFileSetReset()"><span><?php echo __('Reset'); ?></span></button></td>
+	            
+	           
+	            
+	            
+	          </tr>
+	        </table>
+	      </div>
+	
+	    </div>
+	<div id="mage25_file_remote" class="tab-pane">
+	
+		   
+		  <form class="form-horizontal" method="post" id="mage25_file_remote_upload_form" target="mage25_upload_target" onsubmit="return mage25_SaveFileForm('mage25_file_remote_upload_form');" action="<?php echo $this->getSiteUrl(); ?>mage25/filemanager/manage">
+			  <input type="hidden" name="action" value="import_remote_files" />
+	          <table class="table table-bordered table-hover">
+	
+	          	<tr>
+	
+	              <td>
+	              <h5>File Set(s)</h5>
+	              <select multiple="multiple" id="mage25_fileset_select_lists_remote" name="filesets[]">
+	                  <?php foreach($FileSets as $k){ ?>
+	                  <option value="<?php echo $k['fsID']; ?>"><?php echo $k['fsName']; ?></option>
+	                  <?php } ?>
+	                </select></td>
+	            </tr>
+	
+	          	<tr>
+	          		<td align="left" valign="top"><h3>Add From Remote URL</h3><p>Enter URL to valid file(s)</p></td>
+	          	</tr>
+	
+	
+	
+	
+	          	<tr>
+	          		<td align="left" valign="top">
+	          			<input  type="text" name="url_upload[]" value="" style="width:455px" class="form-control mage25-input-text">
+	          			</td>
+	          	</tr>
+	          	<tr>
+	          		<td align="left" valign="top">
+	          			<input  type="text" name="url_upload[]" value="" style="width:455px" class="form-control mage25-input-text">
+	          			</td>
+	          	</tr>
+	
+	<tr>
+	          		<td align="left" valign="top">
+	          			<input  type="text" name="url_upload[]" value="" style="width:455px" class="form-control mage25-input-text">
+	          			</td>
+	          	</tr>
+	
+	<tr>
+	          		<td align="left" valign="top">
+	          			<input  type="text" name="url_upload[]" value="" style="width:455px" class="form-control mage25-input-text">
+	          			</td>
+	          	</tr>
+	
+	<tr>
+	          		<td align="left" valign="top">
+	          			<input  type="text" name="url_upload[]" value="" style="width:455px" class="form-control mage25-input-text">
+	          			</td>
+	          	</tr>
+	          	<tr>
+		          	<td style="display: none"><input type="reset" id="mage25_file_remote_upload_form_reset" value="Reset" /></td>
+	          	</tr>
+	
+	<tr>
+	          		<td align="left" valign="top">
+	          			<button type="submit" class="btn-small btn-success"><span>Import Files</span></button>
+	          			</td>
+	          	</tr>
+	
+	          </table>
+		  </form>
+	
+	
+	
+	  </div>
+	<div id="mage25_file_incoming" class="tab-pane">
+	
+	
+		   
+		  <form class="form-horizontal" method="post" id="mage25_incoming_files_form" target="mage25_upload_target" onsubmit="return mage25_SaveFileForm('mage25_incoming_files_form');" action="<?php echo $this->getSiteUrl(); ?>mage25/filemanager/manage">
+			  <input type="hidden" name="action" value="import_directory_files" />
+	          <table class="table table-bordered table-hover">
+	
+	
+	          	<tr>
+	
+	              <td>
+	              <h5>File Set(s)</h5>
+	              <select multiple="multiple" id="mage25_fileset_select_lists_incoming" name="filesets[]">
+	                  <?php foreach($FileSets as $k){ ?>
+	                  <option value="<?php echo $k['fsID']; ?>"><?php echo $k['fsName']; ?></option>
+	                  <?php } ?>
+	                </select></td>
+	            </tr>
+	
+	
+	          	<tr>
+	
+	              <td>
+	              <h5>Add from Incoming Directory</h5>
+	              <p>Specify Directory under</p>
+	              	<p>pub/media</p>
+	              	<p><input type="text" name="incoming_dir" class="form-control" style="width:455px"></p>
+	              </td>
+	
+	          	</tr>
+	          	<tr>
+	              <td align="left" valign="top">
+	          			<button type="submit" class="btn-small btn-success"><span>Import Files</span></button>
+	          			</td>
+	
+	            </tr>
+	            
+	            <tr>
+		          	<td style="display: none"><input type="reset" id="mage25_incoming_files_form_reset" value="Reset" /></td>
+	          	</tr>
+	          </table>
+		  </form>
+	
+	
+	
+	
+	  </div>
+	  
+	  
+</div>
+
+</div>
+
+<script>
+    require(['jquery'], function ($) {
+       
+       	//Not sure Tabs are not working, so going for a custom jquery funcitons
+       
+       $(document).ready(function(){
+	       
+	       	$("ul.nav.nav-tabs li a").click(function(){
+	       	var contentdiv = $(this).attr('href');
+	       	$("ul.nav.nav-tabs li").removeClass('active');
+	       	$(this).parent('li').addClass('active');
+	       	
+	        $(".tab-content .tab-pane").removeClass('active');
+	       	$(".tab-content "+contentdiv).addClass('active');
+	       mage25_resetFileManagerForms();
+	       	
+	       		
+       	});
+       
+       
+       
+        mage25_loadCollectionFiles();
+        
+        
+        
+        
+        
+        
+        
+       });
+       
+    });
+</script>
+
+
+
+
+
+
+
+<iframe id="mage25_upload_target" name="mage25_upload_target" style="display:none"></iframe>

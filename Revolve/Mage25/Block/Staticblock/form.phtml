@@ -1,0 +1,49 @@
+ <div class="well">
+<p><?php echo __("Select static blocks and order them (Click and drag). It will display in the correct order in view"); ?></p>
+</div>
+
+	<div id="mage25_sortable">
+<?php
+	$staticBlocks = $blockObject->getStaticBlocks();
+	$selectedBlocks = array();
+	if($blockData['bID'] == 0){
+		$selectedBlocks=array();
+	}else{
+		$selectedBlocks = explode(',', $blockData['content']);
+	}
+	
+	
+	
+	foreach($selectedBlocks as $_bk){
+		
+		$_block = $blockObject->getBlockByID($_bk);
+		?>
+		<div class="alert alert-success">
+<input type="checkbox" name="static_block[]" checked="" value="<?php echo $_block->getIdentifier(); ?>">&nbsp;&nbsp;<?php echo $_block->getTitle(); ?>
+</div>
+		<?php
+	}
+	
+	
+	foreach($staticBlocks as $_block){
+		if(in_array($_block->getIdentifier(), $selectedBlocks)) continue;
+		?>
+		<div class="alert alert-success">
+<input type="checkbox" name="static_block[]" value="<?php echo $_block->getIdentifier(); ?>">&nbsp;&nbsp;<?php echo $_block->getTitle(); ?>
+</div>
+		<?php
+	}
+	?>
+</div>
+
+
+
+<script>
+    require(['jquery'], function ($) {
+	     $(document).ready(function(){
+    $( "#mage25_sortable" ).sortable();
+    $( "#mage25_sortable" ).disableSelection();
+       });
+       
+    });
+</script>

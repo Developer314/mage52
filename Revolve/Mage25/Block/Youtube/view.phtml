@@ -1,0 +1,29 @@
+<?php 
+$url = parse_url($YouTubeVideoURL);
+parse_str($url['query'], $query);
+parse_str($url['path'], $path);
+
+
+if (!$vWidth) {
+	$vWidth=425;
+}
+if (!$vHeight) {
+	$vHeight=344;
+}
+
+
+
+
+?>
+	
+	<div id="mage25_youtube<?php  echo $bID?>" class="mage25_youtubeblock">
+	
+	<?php  if($url['host'] == 'youtu.be') { ?>
+		<iframe class="youtube-player" type="text/html" width="<?php   echo $vWidth; ?>" height="<?php   echo $vHeight; ?>" src="https://www.youtube.com/embed/<?php  echo $url['path']?>/<?php  echo (strpos($url['path'], '@')) ? '@' : '?'; ?>wmode=transparent" frameborder="0"></iframe>
+	<?php  }else { ?>
+		<iframe class="youtube-player" type="text/html" width="<?php   echo $vWidth; ?>" height="<?php   echo $vHeight; ?>" src="https://www.youtube.com/embed/<?php  echo $query['v']?>/<?php  echo (strpos($query['v'], '@')) ? '@' : '?'; ?>wmode=transparent" frameborder="0"></iframe>
+	<?php  } ?>
+	</div>
+
+	
+	
